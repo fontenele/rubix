@@ -1,0 +1,8 @@
+<h3><?php echo $artigo['chamada']; ?></h3>
+<hr />
+<div id="artigo-content">
+    <img id="imgDestaque" src="<?php echo APPLICATION_URL . 'upload/galeria-fotos/' . $artigo['imagemDestaque']; ?>" />
+    <?php echo $artigo['conteudo']; ?>
+</div>
+<hr />
+<small id="autorData">Por <?php echo $artigo['nomeEditor']; ?> em <?php echo $this->datetime($artigo['dataUltimaEdicao']); ?></small>

@@ -1,0 +1,29 @@
+<?php
+$form = $this->form;
+$form->prepare();
+?>
+
+<div class="tabbable">
+    <?php echo $this->menu_principal; ?>
+    <div class="tab-content">
+        <p>
+            <h1><?php echo $this->escapeHtml('Novo Usuário'); ?></h1>
+            <?php
+            echo $this->form()->openTag($form);
+            echo $this->formHidden($form->get('int_cod'));
+            echo $this->formRow($form->get('str_login'));
+            echo $this->formRow($form->get('str_senha'));
+            echo $this->formRow($form->get('int_perfil'));
+            echo $this->formRow($form->get('str_nome'));
+            echo $this->formRow($form->get('str_email'));
+            ?>
+            <div class="control-group">
+                <div class="controls">
+                    <?php echo $this->formSubmit($form->get('submit')); ?>
+                </div>
+            </div>
+            <?php echo $this->form()->closeTag(); ?>
+        </p>
+    </div>
+</div>
+

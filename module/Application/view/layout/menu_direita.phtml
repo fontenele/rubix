@@ -1,0 +1,62 @@
+<?php
+$menus = $this->menusItems;
+$menuNaoLogado = array_shift($menus);
+$menuLogado = array_shift($menus);
+$menu = $this->booLogado ? $menuLogado : $menuNaoLogado;
+
+$arrAliases = array(
+    '%fm-login' => '<form class="control-group" id="frm-login" method="post" action="' . $this->url('try-login') . '">
+                        <input type="hidden" name="rememberme" value="1" />
+
+                        <li class="nav-header">' . $this->translate('Entrar') . '</li>
+                        <li>
+                            <div class="input-prepend">
+                                <span class="add-on"><i class="icon-user"></i></span>
+                                <input type="text" class="input-medium" name="str-login" required placeholder="Login" />
+                            </div>
+                        </li>
+                        <li>
+                            <div class="input-prepend">
+                                <span class="add-on"><i class="icon-lock"></i></span>
+                                <input type="password" class="input-medium" name="str-senha" required placeholder="' . $this->translate('Senha') . '" />
+                            </div>
+                        </li>
+                        <li class="divider"></li>
+                        <li><input type="submit" class="btn btn-danger pull-right" value="' . $this->translate('Enviar') . '" /></li>
+                    </form>',
+    '%user' => $strUsuarioLogado //@todo arrumar para dinamico
+);
+?>
+
+<ul class="nav pull-right">
+    <li class="dropdown">
+        <?php
+        $label = isset($arrAliases[$menu['label']]) ? $arrAliases[$menu['label']] : $this->translate($menu['label']);
+        echo '<a class="dropdown-toggle brand brand-right" data-toggle="dropdown" data-target="#">' . $label . ' <b class="caret"></b></a>';
+        if (isset($menu['items']) && is_array($menu['items'])) {
+            echo '<ul class="dropdown-menu unstyled control-group">';
+
+            foreach ($menu['items'] as $_menu) {
+                switch ($_menu['tipo']) {
+                    case 'item':
+                        if (isset($arrAliases[$_menu['label']])) {
+                            echo $arrAliases[$_menu['label']];
+                        } else {
+                            $link = trim($_menu['target']) ? $this->url($_menu['target']) : '#';
+
+                            echo '<li><a href="' . $link . '">' . $this->translate($_menu['label']) . '</a></li>';
+                        }
+                        break;
+                    case 'titulo':
+                        break;
+                    case 'divisor':
+                        echo '<li class="divider"></li>';
+                        break;
+                }
+            }
+            echo '</ul>';
+        }
+        ?>
+    </li>
+</ul>
+

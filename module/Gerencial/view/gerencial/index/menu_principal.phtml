@@ -1,0 +1,17 @@
+<ul class="nav nav-tabs">
+    <li <?php echo $this->controller == 'gerencial' ? 'class="active"' : '' ?>>
+        <a href="<?php echo $this->url('gerencial') ?>">Painel Gerencial</a>
+    </li>
+    <li <?php echo $this->controller == 'usuarios' ? 'class="active"' : '' ?>>
+        <a href="<?php echo $this->url('gerencial', array('controller' => 'usuarios')) ?>">Usuários</a>
+    </li>
+    <li <?php echo $this->controller == 'perfis' ? 'class="active"' : '' ?>>
+        <a href="<?php echo $this->url('gerencial', array('controller' => 'perfis')) ?>">Perfis</a>
+    </li>
+    <li <?php echo $this->controller == 'acessos' ? 'class="active"' : '' ?>>
+        <a href="<?php echo $this->url('gerencial', array('controller' => 'acessos')) ?>">Acessos</a>
+    </li>
+    <li <?php echo $this->controller == 'menus' ? 'class="active"' : '' ?>>
+        <a href="<?php echo $this->url('gerencial', array('controller' => 'menus')) ?>">Menus</a>
+    </li>
+</ul>

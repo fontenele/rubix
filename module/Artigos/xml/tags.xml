@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zend-config>
+    <tabela>tags</tabela>
+    <schema>artigos</schema>
+    <sequence>tags_int_cod_seq</sequence>
+    <model>Artigos\Model\Tags</model>
+    <service>
+        <name>Artigos\Service\Tags</name>
+        <items>
+            <cod>
+                <name>int_cod</name>
+                <primaryKey>1</primaryKey>
+                <length>10</length>
+                <type>numeric</type>
+            </cod>
+            <nome>
+                <name>str_nome</name>
+                <descriptionKey>1</descriptionKey>
+                <length>200</length>
+                <type>text</type>
+                <required>1</required>
+            </nome>
+        </items>
+    </service>
+    <view>
+        <items>
+            <int_cod>
+                <type>hidden</type>
+                <label>Cód</label>
+                <edit>1</edit>
+                <add>1</add>
+            </int_cod>
+            <str_nome>
+                <type>text</type>
+                <label>Nome</label>
+                <hint>Informe o Nome</hint>
+                <hintview>focus</hintview>
+                <placeholder>Nome</placeholder>
+                <required>1</required>
+                <maxlength>200</maxlength>
+                <edit>1</edit>
+                <add>1</add>
+            </str_nome>
+            <submit_tags>
+                <type>submit</type>
+                <label>Salvar</label>
+                <name>submit</name>
+                <class>btn-primary</class>
+                <hint>Enviar o formulário</hint>
+                <search>1</search>
+                <edit>1</edit>
+                <add>1</add>
+                <delete>1</delete>
+            </submit_tags>
+        </items>
+    </view>
+</zend-config>

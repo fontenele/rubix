@@ -1,0 +1,43 @@
+<div class="tabbable">
+    <?php echo $this->menu_principal; ?>
+    <div class="tab-content">
+
+
+        <a title="Cadastrar um novo perfil" class="btn btn-primary pull-right" href="<?php echo $this->url('gerencial', array('controller' => 'perfis', 'action' => 'add')); ?>">Adicionar Perfis</a>
+        <span class="clearfix"></span>
+
+        <form class="form-horizontal" method="post" action="#dg">
+            <fieldset>
+                <legend>Filtros de pesquisa</legend>
+                <?php foreach ($this->filters->getItems() as $item): ?>
+                    <?php echo $this->formRow($item) ?>
+                <?php endforeach; ?>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary" title="Filtrar pesquisa"><i class="icon-search icon-white"></i> Filtrar</button>
+                    <button type="reset" class="btn btn-reset btn-danger" title="Limpar campos"><i class="icon-remove icon-white"></i> Limpar</button>
+                </div>
+            </fieldset>
+        </form>
+
+        <a id="dg" href="#dg"></a>
+        <?php echo $this->datagrid ?>
+        
+    </div>
+</div>
+
+<div id="mod-excluir" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <form action="" data-action-original="/gerencial/perfis/delete/" method="post">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="myModalLabel">Excluir perfil</h3>
+        </div>
+        <div class="modal-body">
+            <p>Tem certeza que deseja excluir o perfil?</p>
+            <div id="mod-excluir-body"></div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">Cancelar</button>
+            <input type="submit" class="btn btn-danger" value="Excluir" />
+        </div>
+    </form>
+</div>

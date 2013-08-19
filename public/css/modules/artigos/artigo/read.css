@@ -1,0 +1,14 @@
+#imgDestaque {
+    width: 360px;
+    float: left;
+    padding-right: 10px;
+}
+
+#artigo-content {
+    color: #3F3F3F;
+    text-align: justify;
+}
+#artigo-content ~ hr {
+    position: relative;
+    top: 10px;
+}

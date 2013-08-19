@@ -1,0 +1,88 @@
+<form method="post" class="form-inline">
+    <fieldset>
+        <legend>Dados da Entidade</legend>
+        <span class="span4">
+            <label class="control-label" for="nmModulo">Módulo:</label>
+            <input type="text" id="nmModulo" name="nmModulo" placeholder="Nome do Módulo" value="<?php echo $this->nmModulo ?>">
+        </span>
+        <span class="span4">
+            <label class="control-label" for="nmModulo">Entidade:</label>
+            <input type="text" id="nmEntidade" name="nmEntidade" placeholder="Nome da Entidade"  value="<?php echo $this->nmEntidade ?>">
+        </span>
+    </fieldset>
+    <br />
+    <fieldset>
+        <legend>Configuração</legend>
+        <div class="tabbable">
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#tab-form" data-toggle="tab">Form</a></li>
+                <li><a href="#tab-service" data-toggle="tab">Service</a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane active" id="tab-form">
+                    <table class="table table-bordered table-condensed table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nome</th>
+                                <th>Label</th>
+                                <th>Tipo</th>
+                                <th>Mín.</th>
+                                <th>Máx.</th>
+                                <th>Hint</th>
+                                <th>Placeholder</th>
+                                <th>Domínio</th>
+                                <th>Obrig.</th>
+                                <th width="30%">Hint View</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($this->colunas as $coluna): ?>
+                                <tr>
+                                    <td><input type="text" title="ID" class="input-small" placeholder="ID" name="id" value="<?php echo $coluna['campo'] ?>" /></td>
+                                    <td><input type="text" title="Name" class="input-small" placeholder="Name" name="name" value="<?php echo $coluna['campo'] ?>" /></td>
+                                    <td><input type="text" title="Label" class="input-small" placeholder="Label" name="label" <?php echo $coluna['descricao'] ?> /></td>
+                                    <td>
+                                        <select class="input-small" title="Tipo" name="tipo">
+                                            <option value="">Tipo</option>
+                                        </select>
+                                    </td>
+                                    <td><input type="text" title="Mínimo de caracteres" class="input-mini" placeholder="Mín." value="0" name="minimo" /></td>
+                                    <td><input type="text" title="Máximo de caracteres" class="input-mini" placeholder="Máx." value="<?php echo $coluna['tamanho'] ?>" name="maximo" /></td>
+                                    <td><input type="text" title="Hint" class="input-medium" placeholder="Hint" name="hint" value="Informe o <?php echo $coluna['descricao'] ?>" /></td>
+                                    <td><input type="text" title="Placeholder" class="input-small" placeholder="Placeholder" name="placeholder" value="<?php echo $coluna['descricao'] ?>" /></td>
+                                    <td><input type="text" title="Domínio ex:[1,Ativo][2,Inativo]" class="input-small" placeholder="Domínio" name="dominio" /></td>
+                                    <td class="center">
+                                        <label class="checkbox">
+                                            <input type="checkbox" title="Campo Obrigatório" name="obrigatorio" />
+                                        </label>
+                                    </td>
+                                    <td class="center">
+                                        <div class="btn-group" data-toggle="buttons-radio">
+                                            <button type="button" name="hint-view[<?php echo $coluna['campo'] ?>]" class="btn btn-small active">Focus</button>
+                                            <button type="button" name="hint-view[<?php echo $coluna['campo'] ?>]" class="btn btn-small">Over</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+
+                    </p>
+                </div>
+                <div class="tab-pane form-horizontal" id="tab-service">
+                    <div class="control-group" data-original-title="">
+                        <label required="required" for="str_login" class="control-label" data-original-title="">Model</label>
+                        <div class="controls" data-original-title="">
+                            <input type="text" value="" maxlength="12" id="str_login" data-trigger="focus" required="required" name="str_login" data-original-title="Informe o Login">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Criar Entidade</button>
+    </div>
+    <br clear="both" />
+</form>

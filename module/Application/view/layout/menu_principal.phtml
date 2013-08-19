@@ -1,0 +1,81 @@
+<ul class="nav">
+    <?php
+    foreach ($this->menusItems as $_item) {
+        switch ($_item['tipo']) {
+            case 'item':
+                if (isset($_item['items'])) {
+                    ?>
+                    <li class="dropdown <?php
+                    foreach($_item['items'] as $_filho) {
+                        $itemAtivo = false;
+                        switch(true) {
+                            case $_filho['tipo'] == 'item' && $_filho['target'] && $this->url($_filho['target']) == $this->controllerAction:
+                            case $_filho['tipo'] == 'url' && $_filho['target'] && $_filho['target'] == APPLICATION_URL . substr($_SERVER['REQUEST_URI'], 1):
+                                $itemAtivo = true;
+                                break;
+                        }
+                        if($itemAtivo) {
+                            echo 'active';
+                            break;
+                        }
+                    }
+                    ?>">
+                        <a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="#">
+                            <?php echo $this->translate($_item['label']) ?> <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu" role="menu">
+                            <?php
+                            foreach ($_item['items'] as $_filho) {
+                                switch ($_filho['tipo']) {
+                                    case 'item':
+                                        ?>
+                                        <li class="">
+                                            <a href="<?php echo $_filho['target'] ? $this->url($_filho['target']) : '#' ?>"><?php echo $this->translate($_filho['label']) ?></a>
+                                        </li>
+                                        <?php
+                                        break;
+                                    case 'url':
+                                        ?>
+                                        <li class="">
+                                            <a href="<?php echo $_filho['target'] ? $_filho['target'] : '#' ?>"><?php echo $this->translate($_filho['label']) ?></a>
+                                        </li>
+                                        <?php
+                                        break;
+                                    case 'titulo':
+                                        ?>
+                                        <li class="nav-header"><?php echo $this->translate($_filho['label']) ?></li>
+                                        <?php
+                                        break;
+                                    case 'divisor':
+                                        ?>
+                                        <li class="divider"></li>
+                                        <?php
+                                        break;
+                                }
+                            }
+                            ?>
+                        </ul>
+                    </li>
+                    <?php
+                } else {
+                    ?>
+                    <li class="<?php echo trim($_item['target']) && $this->controllerAction == $this->url(trim($_item['target'])) ? 'active' : ''; ?>">
+                        <a href="<?php echo trim($_item['target']) ? $this->url(trim($_item['target'])) : '#' ?>"><?php echo $this->translate(trim($_item['label'])) ?></a>
+                    </li>
+                    <?php
+                }
+                break;
+            case 'titulo':
+                ?>
+                <li class="nav-header"><?php echo $this->translate($_item['label']) ?></li>
+                <?php
+                break;
+            case 'divisor':
+                ?>
+                <li class="divider"></li>
+                <?php
+                break;
+        }
+    }
+    ?>
+</ul>
