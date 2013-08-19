@@ -10,7 +10,7 @@
 return array(
     'router' => array(
         'routes' => array(
-            'home' => array(
+            /*'home' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
                     'route' => '/',
@@ -195,10 +195,52 @@ return array(
                     'default' => array(
                         'type' => 'Segment',
                         'options' => array(
-                            'route' => '/[:controller[/:action]]',
+                            'route' => '/rubix/[:controller[/:action]]',
                             'constraints' => array(
                                 'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
                                 'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                            ),
+                            'defaults' => array(
+                            ),
+                        ),
+                    ),
+                ),
+            ),*/
+            'generic' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/rubix[/:controller[/:action[/:id]]][/]', // allow trailing slash too [/]
+                    'constraints' => array(
+                        'action'        => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'controller'    => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'            => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'Application\Controller',
+                        'controller' => 'Index',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+            'application' => array(
+                'type'    => 'Literal',
+                'options' => array(
+                    'route'    => '/home',
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'Application\Controller',
+                        'controller'    => 'Index',
+                        'action'        => 'index',
+                    ),
+                ),
+                'may_terminate' => true,
+                'child_routes' => array(
+                    'default' => array(
+                        'type'    => 'Segment',
+                        'options' => array(
+                            'route'    => '/[:controller[/:action]]',
+                            'constraints' => array(
+                                'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
                             ),
                             'defaults' => array(
                             ),
@@ -230,16 +272,17 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
-            //'Application\Controller\Index' => 'Application\Controller\IndexController',
-            'home' => 'Application\Controller\IndexController',
+            'Application\Controller\Index' => 'Application\Controller\IndexController',
+            /*'home' => 'Application\Controller\IndexController',
             'galeriaFotos' => 'Application\Controller\GaleriaFotosController',
-            'categoriasImagens' => 'Application\Controller\CategoriasImagensController',
+            'categoriasImagens' => 'Application\Controller\CategoriasImagensController',*/
         ),
         'factories' => array(
             //'Application\Controller\Index' => 'Application\Controller\IndexController',
         ),
     ),
     'view_manager' => array(
+        'base_path' => 'http://localhost/rubix/',
         'display_not_found_reason' => true,
         'display_exceptions' => true,
         'doctype' => 'HTML5',

@@ -4,7 +4,7 @@
         <cod>1</cod>
         <codPai></codPai>
         <label>Principal</label>
-        <target>home</target>
+        <target>application</target>
         <posicao>1</posicao>
         <codMenu>1</codMenu>
         <tipo>item</tipo>
@@ -123,7 +123,7 @@
         <cod>16</cod>
         <codPai></codPai>
         <label>Contato</label>
-        <target>contato</target>
+        <target></target>
         <posicao>7</posicao>
         <codMenu>1</codMenu>
         <tipo>item</tipo>

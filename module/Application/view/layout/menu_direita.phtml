@@ -5,7 +5,7 @@ $menuLogado = array_shift($menus);
 $menu = $this->booLogado ? $menuLogado : $menuNaoLogado;
 
 $arrAliases = array(
-    '%fm-login' => '<form class="control-group" id="frm-login" method="post" action="' . $this->url('try-login') . '">
+    '%fm-login' => '<form class="control-group" id="frm-login" method="post" action="' . /*$this->url('try-login') .*/ '">
                         <input type="hidden" name="rememberme" value="1" />
 
                         <li class="nav-header">' . $this->translate('Entrar') . '</li>

@@ -33,7 +33,7 @@
                 <cod>18</cod>
                 <codPai>17</codPai>
                 <label>Painel Gerencial</label>
-                <target>gerencial</target>
+                <target></target>
                 <posicao>1</posicao>
                 <codMenu>2</codMenu>
                 <tipo>item</tipo>
@@ -42,7 +42,7 @@
                 <cod>80</cod>
                 <codPai>17</codPai>
                 <label>Artigos</label>
-                <target>artigos</target>
+                <target></target>
                 <posicao>2</posicao>
                 <codMenu>2</codMenu>
                 <tipo>item</tipo>
@@ -60,7 +60,7 @@
                 <cod>20</cod>
                 <codPai>17</codPai>
                 <label>Sair</label>
-                <target>try-logout</target>
+                <target></target>
                 <posicao>4</posicao>
                 <codMenu>2</codMenu>
                 <tipo>item</tipo>
