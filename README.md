@@ -22,4 +22,4 @@ Rubix PHP Framework (ZF2 extended)
   A proven history of success running business critical and high-usage applications
 
 <h3>Entities definitions on XML</h3>
-  Now you can define your entities and control all layers just writing simple XML's
+  Now you can define your entities and control all layers just writing simple XMLs
