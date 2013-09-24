@@ -41,6 +41,14 @@ class Module extends BaseModule {
         );
     }
 
+    public function getControllerConfig() {
+        return array(
+            'invokables' => array(
+                'principal' => 'Application\Controller\IndexController'
+            ),
+        );
+    }
+
     protected function authProcess(\Zend\ServiceManager\ServiceManager $sm) {
         $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
         $dbTableAuthAdapter = new DbTableAuthAdapter($dbAdapter, "usuarios", 'str_login', 'str_senha', 'MD5(?)');
@@ -49,7 +57,7 @@ class Module extends BaseModule {
         $authService->setAdapter($dbTableAuthAdapter);
         $authService->setStorage($sm->get('AuthStorage'));
 
-        if($authService->hasIdentity()) {
+        if ($authService->hasIdentity()) {
             //$objUsuario = unserialize($authService->getIdentity());
             //$objUsuario = $sm->get('usuarios')->getUsuario(null, $authService->getIdentity());
             //$authService->getStorage()->write($objUsuario);

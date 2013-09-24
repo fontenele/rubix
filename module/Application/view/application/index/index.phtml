@@ -1,50 +1,22 @@
 <div class="row-fluid">
-    <div class="span8">
-        <div id="homeCarousel" class="carousel slide">
-            <ol class="carousel-indicators">
-                <?php foreach($destaques as $i => $destaque): ?>
-                    <li data-target="#homeCarousel" data-slide-to="<?php echo $i; ?>" class="<?php echo $i == 0 ? 'active' : ''; ?>"></li>
-                <?php endforeach; ?>
-            </ol>
-            <!-- Carousel items -->
-            <div class="carousel-inner">
-                <?php foreach($destaques as $i => $destaque): ?>
-                    <div class="item <?php echo $i == 0 ? 'active' : ''; ?>">
-                        <img src="<?php echo $destaque['str_img_destaque'] ? APPLICATION_URL . 'upload/galeria-fotos/' . $destaque['str_img_destaque'] : 'http://placehold.it/770x296'; ?>" alt="" />
-                        <div class="carousel-caption">
-                            <p><?php echo $destaque['str_chamada'] ?><a href="./artigos/artigo/read/<?php echo $destaque['int_cod']; ?>" class="btn pull-right btn-danger btn-small">Ler mais</a></p>
-                        </div>
-                    </div>
-                <?php endforeach; ?>
-            </div>
-        </div>
+    <div class="span8 well">
+        Block Left
     </div>
-    <div class="span4">
-        <div class="thumbnail well" id="div-noticias">
-            <div class="items">
-                <?php foreach($noticias as $i => $noticia): ?>
-                <blockquote class="item"><a href="<?php echo $noticia['link']; ?>" target="_blank"><?php echo $noticia['title']; ?></a></blockquote>
-                    <?php if($i < count($noticias) - 1): ?>
-                        <hr />
-                    <?php endif; ?>
-                <?php endforeach; ?>
-            </div>
-        </div>
+    <div class="span4 well">
+        Block Right
     </div>
 </div>
 
-<?php //x($this->lerArtigo(2)); ?>
-
-<div class="row-fluid" id="blo-destaques">
+<div class="row-fluid main-blocks">
     <ul class="thumbnails">
-        <li class="span4">
-            <?php echo $this->lerArtigo(1); ?>
+        <li class="span4 well">
+            A
         </li>
-        <li class="span4">
-            <?php echo $this->lerArtigo(2); ?>
+        <li class="span4 well">
+            B
         </li>
-        <li class="span4">
-            <?php echo $this->lerArtigo(1); ?>
+        <li class="span4 well">
+            C
         </li>
     </ul>
 </div>

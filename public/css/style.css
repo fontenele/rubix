@@ -7,6 +7,7 @@ body {
     background: url("../img/honey_im_subtle.png") repeat scroll 0% 0% transparent;
     color: #3F3F3F;
 }
+
 body > .container {
     padding-bottom: 40px;
 }
@@ -140,8 +141,8 @@ body > .navbar .brand-right:hover {
 }
 
 div.container a.brand-left {
-    background: url("../img/fs/brand_transp.png") no-repeat scroll 0 4px transparent;
-    background-size: 50px;
+    background: url("../img/logo.png") no-repeat scroll 0 4px transparent;
+    background-size: 40px;
     margin-left: 0;
     padding: 14px 28px 12px 58px;
     font-size: 1.8em;
@@ -379,7 +380,6 @@ input[type="checkbox"]:focus {
         padding-top: 90px;
     }
     #blo-destaques .thumbnails .span4 .thumbnail {
-        /*min-height: 220px;*/
         height: 205px !important;
     }
 
@@ -407,7 +407,6 @@ input[type="checkbox"]:focus {
         border-left: 1px dashed #333333;
     }
     #blo-destaques .thumbnails .span4 .thumbnail {
-        /*min-height: 220px;*/
         height: 285px;
     }
 
@@ -442,13 +441,10 @@ input[type="checkbox"]:focus {
         border-top: none;
     }
     #blo-destaques .thumbnails .span4 .thumbnail {
-        /*min-height: 220px;*/
         height: 150px;
     }
     #blo-destaques .thumbnails .span4 .thumbnail .caption {
         position: relative;
-/*        width: 182px;
-        height: 270px;*/
     }
 
     .div-artigo-leia-mais {
@@ -461,7 +457,6 @@ input[type="checkbox"]:focus {
 
 @media (max-width: 572px) {
     #blo-destaques .thumbnails .span4 .thumbnail {
-        /*min-height: 220px;*/
         height: 185px;
     }
     #blo-destaques .thumbnails .span4 .thumbnail .caption {

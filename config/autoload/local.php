@@ -2,7 +2,7 @@
 
 return array(
     'db' => array(
-        'username' => 'your_database_user',
-        'password' => 'your_database_password'
+        'username' => 'postgres',
+        'password' => 'postgres'
     )
 );

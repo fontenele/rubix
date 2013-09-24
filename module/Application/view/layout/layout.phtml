@@ -3,7 +3,7 @@
 <html lang="pt">
     <head>
         <meta charset="utf-8">
-        <?php echo $this->headTitle($this->translate('nome-aplicacao'))->setSeparator(' :: ')->setAutoEscape(false) ?>
+        <?php echo $this->headTitle($this->translate('Rubix'))->setSeparator(' :: ')->setAutoEscape(false) ?>
         <?php echo $this->headMeta()->appendName('viewport', 'width=device-width, initial-scale=1.0') ?>
 
         <?php
@@ -35,7 +35,7 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </a>
-                        <a class="brand brand-left" href="<?php //echo $this->url('home') ?>"><?php echo $this->translate('nome-aplicacao') ?></a>
+                        <a class="brand brand-left" href="#"><?php echo $this->translate('Rubix') ?></a>
                         <div class="nav-collapse collapse">
                             <?php echo $this->booMostrarMenuPrincipal || ($this->menu_principal && !isset($this->booMostrarMenuPrincipal)) ? $this->menu_principal : ''; ?>
                             <?php echo $this->booMostrarMenuDireita || ($this->menu_direita && !isset($this->booMostrarMenuDireita)) ? $this->menu_direita : ''; ?>

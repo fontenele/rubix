@@ -10,180 +10,28 @@
 return array(
     'router' => array(
         'routes' => array(
-            /*'home' => array(
-                'type' => 'Zend\Mvc\Router\Http\Literal',
+            'generic' => array(
+                'type' => 'segment',
                 'options' => array(
-                    'route' => '/',
+                    'route' => CONTROLLER_ROUTE_HOST . '[/:module][/:controller][/:action][/:id][/]',
+                    'constraints' => array(
+                        '__NAMESPACE__' => 'Application\Controller',
+                        'module' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id' => '[0-9]+',
+                    ),
                     'defaults' => array(
-                        'controller' => 'home',
+                        'module' => 'Application',
+                        'controller' => 'principal',
                         'action' => 'index',
                     ),
                 ),
             ),
-            'quem-somos' => array(
-                'type' => 'Zend\Mvc\Router\Http\Literal',
-                'options' => array(
-                    'route' => '/quem-somos',
-                    'defaults' => array(
-                        'controller' => 'home',
-                        'action' => 'quemSomos',
-                    ),
-                ),
-            ),
-            'servicos' => array(
-                'type' => 'Zend\Mvc\Router\Http\Literal',
-                'options' => array(
-                    'route' => '/servicos',
-                    'defaults' => array(
-                        'controller' => 'home',
-                        'action' => 'servicos',
-                    ),
-                ),
-            ),
-            'clientes' => array(
-                'type' => 'Zend\Mvc\Router\Http\Literal',
-                'options' => array(
-                    'route' => '/clientes',
-                    'defaults' => array(
-                        'controller' => 'home',
-                        'action' => 'clientes',
-                    ),
-                ),
-            ),
-            'apps-ios' => array(
-                'type' => 'Zend\Mvc\Router\Http\Literal',
-                'options' => array(
-                    'route' => '/apps-ios',
-                    'defaults' => array(
-                        'controller' => 'home',
-                        'action' => 'appsIos',
-                    ),
-                ),
-            ),
-            'sistemas-gestao' => array(
-                'type' => 'Zend\Mvc\Router\Http\Literal',
-                'options' => array(
-                    'route' => '/sistemas-gestao',
-                    'defaults' => array(
-                        'controller' => 'home',
-                        'action' => 'sistemasGestao',
-                    ),
-                ),
-            ),
-            'sites-empresariais' => array(
-                'type' => 'Zend\Mvc\Router\Http\Literal',
-                'options' => array(
-                    'route' => '/sites-empresariais',
-                    'defaults' => array(
-                        'controller' => 'home',
-                        'action' => 'sitesEmpresariais',
-                    ),
-                ),
-            ),
-            'advergames' => array(
-                'type' => 'Zend\Mvc\Router\Http\Literal',
-                'options' => array(
-                    'route' => '/advergames',
-                    'defaults' => array(
-                        'controller' => 'home',
-                        'action' => 'advergames',
-                    ),
-                ),
-            ),
-            'suporte' => array(
-                'type' => 'Zend\Mvc\Router\Http\Literal',
-                'options' => array(
-                    'route' => '/suporte',
-                    'defaults' => array(
-                        'controller' => 'home',
-                        'action' => 'suporte',
-                    ),
-                ),
-            ),
-            'contato' => array(
-                'type' => 'Zend\Mvc\Router\Http\Literal',
-                'options' => array(
-                    'route' => '/contato',
-                    'defaults' => array(
-                        'controller' => 'home',
-                        'action' => 'contato',
-                    ),
-                ),
-            ),
-            'try-login' => array(
-                'type' => 'Zend\Mvc\Router\Http\Literal',
-                'options' => array(
-                    'route' => '/try-login',
-                    'defaults' => array(
-                        'controller' => 'home',
-                        'action' => 'tryLogin',
-                    ),
-                ),
-            ),
-            'try-logout' => array(
-                'type' => 'Zend\Mvc\Router\Http\Literal',
-                'options' => array(
-                    'route' => '/try-logout',
-                    'defaults' => array(
-                        'controller' => 'home',
-                        'action' => 'tryLogout',
-                    ),
-                ),
-            ),
-            'galeria-fotos' => array(
-                'type' => 'segment',
-                'options' => array(
-                    'route' => '/galeria-fotos[/:action][/:id]',
-                    'constraints' => array(
-                        'controller' => '[/:controller]',
-                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'id' => '[0-9]+'
-                    ),
-                    'defaults' => array(
-                        'controller' => 'galeriaFotos',
-                        'action' => 'index'
-                    )
-                ),
-                'may_terminate' => true,
-                'child_routes' => array(
-                    'default' => array(
-                        'type' => 'Wildcard',
-                        'options' => array(
-                        ),
-                    ),
-                ),
-            ),
-            'categorias-imagens' => array(
-                'type' => 'segment',
-                'options' => array(
-                    'route' => '/categorias-imagens[/:action][/:id]',
-                    'constraints' => array(
-                        'controller' => '[/:controller]',
-                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'id' => '[0-9]+'
-                    ),
-                    'defaults' => array(
-                        'controller' => 'categoriasImagens',
-                        'action' => 'index'
-                    )
-                ),
-                'may_terminate' => true,
-                'child_routes' => array(
-                    'default' => array(
-                        'type' => 'Wildcard',
-                        'options' => array(
-                        ),
-                    ),
-                ),
-            ),
-            // The following is a route to simplify getting started creating
-            // new controllers and actions without needing to create a new
-            // module. Simply drop new controllers in, and you can access them
-            // using the path /application/:controller/:action
             'application' => array(
                 'type' => 'Literal',
                 'options' => array(
-                    'route' => '/application',
+                    'route' => '/home',
                     'defaults' => array(
                         '__NAMESPACE__' => 'Application\Controller',
                         'controller' => 'Index',
@@ -195,52 +43,10 @@ return array(
                     'default' => array(
                         'type' => 'Segment',
                         'options' => array(
-                            'route' => '/rubix/[:controller[/:action]]',
+                            'route' => '/[:controller[/:action]]',
                             'constraints' => array(
                                 'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
                                 'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                            ),
-                            'defaults' => array(
-                            ),
-                        ),
-                    ),
-                ),
-            ),*/
-            'generic' => array(
-                'type'    => 'segment',
-                'options' => array(
-                    'route'    => '/rubix[/:controller[/:action[/:id]]][/]', // allow trailing slash too [/]
-                    'constraints' => array(
-                        'action'        => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'controller'    => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'id'            => '[0-9]+',
-                    ),
-                    'defaults' => array(
-                        '__NAMESPACE__' => 'Application\Controller',
-                        'controller' => 'Index',
-                        'action'     => 'index',
-                    ),
-                ),
-            ),
-            'application' => array(
-                'type'    => 'Literal',
-                'options' => array(
-                    'route'    => '/home',
-                    'defaults' => array(
-                        '__NAMESPACE__' => 'Application\Controller',
-                        'controller'    => 'Index',
-                        'action'        => 'index',
-                    ),
-                ),
-                'may_terminate' => true,
-                'child_routes' => array(
-                    'default' => array(
-                        'type'    => 'Segment',
-                        'options' => array(
-                            'route'    => '/[:controller[/:action]]',
-                            'constraints' => array(
-                                'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                                'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
                             ),
                             'defaults' => array(
                             ),
@@ -255,8 +61,8 @@ return array(
             'translator' => 'Zend\I18n\Translator\TranslatorServiceFactory',
         ),
         'invokables' => array(
-            'Imagens' => 'Application\Service\ImagensService',
-            'CategoriasImagens' => 'Application\Service\CategoriasImagensService',
+        //'Imagens' => 'Application\Service\ImagensService',
+        //'CategoriasImagens' => 'Application\Service\CategoriasImagensService',
         ),
     ),
     'translator' => array(
@@ -272,13 +78,8 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
-            'Application\Controller\Index' => 'Application\Controller\IndexController',
-            /*'home' => 'Application\Controller\IndexController',
-            'galeriaFotos' => 'Application\Controller\GaleriaFotosController',
-            'categoriasImagens' => 'Application\Controller\CategoriasImagensController',*/
         ),
         'factories' => array(
-            //'Application\Controller\Index' => 'Application\Controller\IndexController',
         ),
     ),
     'view_manager' => array(
@@ -301,16 +102,9 @@ return array(
     ),
     'view_helpers' => array(
         'invokables' => array(
-            'datetime' => 'FS\View\Helper\DateFormat',
-            //'lerArtigo' => 'Artigos\View\Helper\LerArtigo',
+            'datetime' => 'FS\View\Helper\DateFormat'
         ),
         'factories' => array(
-            'lerArtigo' => function ($helperPluginManager) {
-                $serviceLocator = $helperPluginManager->getServiceLocator();
-                $viewHelper = new \Artigos\View\Helper\LerArtigo();
-                $viewHelper->setServiceLocator($serviceLocator);
-                return $viewHelper;
-            }
         )
     ),
 );

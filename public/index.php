@@ -1,16 +1,23 @@
 <?php
-/**
- * This makes our life easier when dealing with paths. Everything is relative
- * to the application root now.
- */
-if(2==1) { session_start(); session_destroy();die; }
+
 chdir(dirname(__DIR__));
+
+// Debug
 require_once('vendor/fdebug.php');
 
 // Setup autoloading
 require 'init_autoloader.php';
 
-define('APPLICATION_URL', "http://$_SERVER[HTTP_HOST]/");
+$httpScheme = $_SERVER['REQUEST_SCHEME'];
+if ($_SERVER['SCRIPT_NAME'] == '/index.php') {
+    define('APPLICATION_URL', "{$httpScheme}://{$_SERVER['SERVER_NAME']}/");
+    define('CONTROLLER_ROUTE_HOST', '');
+} else {
+    $host = str_replace('/public/index.php', '', $_SERVER['SCRIPT_NAME']);
+    define('APPLICATION_URL', "{$httpScheme}://{$_SERVER['HTTP_HOST']}{$host}/");
+    define('CONTROLLER_ROUTE_HOST', $host);
+}
+
 define('APPLICATION_DIR', dirname(__DIR__) . '/');
 define('APPLICATION_LOCKED', true);
 
