@@ -21,7 +21,7 @@
             <item-4>
                 <cod>4</cod>
                 <codPai>3</codPai>
-                <label>Aplicativos</label>
+                <label>Produtos A</label>
                 <target></target>
                 <posicao>1</posicao>
                 <codMenu>1</codMenu>
@@ -30,7 +30,7 @@
             <item-5>
                 <cod>5</cod>
                 <codPai>3</codPai>
-                <label>Apps para iPhone/iPad</label>
+                <label>Produtos A1</label>
                 <target></target>
                 <posicao>2</posicao>
                 <codMenu>1</codMenu>
@@ -48,7 +48,7 @@
             <item-7>
                 <cod>7</cod>
                 <codPai>3</codPai>
-                <label>Sistemas sob Medida</label>
+                <label>Produtos B</label>
                 <target></target>
                 <posicao>4</posicao>
                 <codMenu>1</codMenu>
@@ -57,7 +57,7 @@
             <item-8>
                 <cod>8</cod>
                 <codPai>3</codPai>
-                <label>Sistemas de Gestão</label>
+                <label>Produtos B1</label>
                 <target></target>
                 <posicao>5</posicao>
                 <codMenu>1</codMenu>
@@ -66,7 +66,7 @@
             <item-9>
                 <cod>9</cod>
                 <codPai>3</codPai>
-                <label>Sites Empresariais</label>
+                <label>Produtos B2</label>
                 <target></target>
                 <posicao>6</posicao>
                 <codMenu>1</codMenu>
@@ -84,7 +84,7 @@
             <item-11>
                 <cod>11</cod>
                 <codPai>3</codPai>
-                <label>Jogos</label>
+                <label>Produtos C</label>
                 <target></target>
                 <posicao>8</posicao>
                 <codMenu>1</codMenu>
@@ -93,7 +93,7 @@
             <item-12>
                 <cod>12</cod>
                 <codPai>3</codPai>
-                <label>Advergames</label>
+                <label>Produtos C1</label>
                 <target></target>
                 <posicao>9</posicao>
                 <codMenu>1</codMenu>

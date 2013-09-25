@@ -102,7 +102,8 @@ return array(
     ),
     'view_helpers' => array(
         'invokables' => array(
-            'datetime' => 'FS\View\Helper\DateFormat'
+            'datetime' => 'FS\View\Helper\DateFormat',
+            'basePath' => 'FS\View\Helper\BasePath',
         ),
         'factories' => array(
         )

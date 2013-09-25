@@ -21,4 +21,5 @@ return array(
     'FS\View\Helper\FormSubmit' => 'vendor/FS/View/Helper/FormSubmit.php',
     'FS\View\Helper\FormLabel' => 'vendor/FS/View/Helper/FormLabel.php',
     'FS\View\Helper\DateFormat' => 'vendor/FS/View/Helper/DateFormat.php',
+    'FS\View\Helper\BasePath' => 'vendor/FS/View/Helper/BasePath.php',
 );
