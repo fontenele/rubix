@@ -1,9 +1,0 @@
-#menus-tree {
-    background-color: #F5F5F5 !important;
-    padding: 10px;
-    height: 300px;
-    overflow: auto;
-}
-#menus-tree .jstree-icon {
-    cursor: pointer;
-}
