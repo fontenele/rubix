@@ -7,7 +7,11 @@ use Zend\View\Helper\AbstractHelper;
 class BasePath extends AbstractHelper {
 
     public function __invoke($public = true) {
-        return APPLICATION_URL . ($public ? 'public/' : '');
+        if(!CONTROLLER_ROUTE_HOST) {
+            return APPLICATION_URL;
+        }else{
+            return APPLICATION_URL . ($public ? 'public/' : '');
+        }
     }
 
     /**
