@@ -1,0 +1,22 @@
+#block-login {
+    margin-top: 5%;
+}
+#block-login .panel-body {
+    padding-bottom: 0;
+}
+#block-login .brand {
+    margin: 10px auto;
+}
+
+input::-webkit-input-placeholder {
+    color: #000000 !important;
+}
+input:-moz-placeholder {
+    color: #000000 !important;
+}
+input::-moz-placeholder {
+    color: #000000 !important;
+}
+input:-ms-input-placeholder {
+    color: #000000 !important;
+}

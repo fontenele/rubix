@@ -1,0 +1,31 @@
+<div class="panel panel-default">
+    <table class="table table-responsive table-bordered table-condensed table-striped">
+        <thead>
+            <tr>
+                <th width="5%">Testes</th>
+                <th width="5%">Asserts</th>
+                <th width="5%">Falhas</th>
+                <th width="5%">Erros</th>
+                <th width="40%">Tempo</th>
+                <th width="40%">Memória</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="<?php echo $this->status == 'SUCESSO' ? 'success' : 'danger' ?>">
+                <td><?php echo $this->tests ?></td>
+                <td><?php echo $this->asserts ?></td>
+                <td><?php echo $this->failures ?></td>
+                <td><?php echo $this->errors ?></td>
+                <td><?php echo $this->time ?></td>
+                <td><?php echo $this->memory ?></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<a class="btn btn-info" target="_blank" href="<?php echo $this->basePath() ?>_reports">Relatório</a>
+<a class="btn btn-default" target="_blank" href="<?php echo $this->basePath() ?>report.html">Info</a>
+
+<br /><br />
+
+<pre><?php echo $this->cmdResult ?></pre>

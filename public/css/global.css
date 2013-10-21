@@ -1,0 +1,54 @@
+@charset "utf-8";
+
+body {
+    background: url("../../img/crissXcross.png");
+    padding-top: 70px;
+    padding-bottom: 70px;
+    color: #EEEEEE;
+}
+
+.table {
+    color: #000000;
+}
+
+#layout-topo .brand-mini {
+    margin-left: 10px;
+    background-position: left;
+    height: 48px;
+    display: table !important;
+}
+#layout-topo .brand-mini span {
+    padding-left: 16px;
+}
+#layout-footer {
+    min-height: 28px;
+}
+#layout-footer .navbar-text {
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+
+.brand {
+    display: block;
+    height: 96px;
+    width: 93px;
+    background: url("../img/logo.png") no-repeat scroll left center rgba(0, 0, 0, 0);
+}
+.brand-medium {
+    display: block;
+    height: 66px;
+    width: 64px;
+    background: url("../img/logo-medium.png") no-repeat scroll left center rgba(0, 0, 0, 0);
+}
+.brand-small {
+    display: block;
+    height: 46px;
+    width: 45px;
+    background: url("../img/logo-small.png") no-repeat scroll left center rgba(0, 0, 0, 0);
+}
+.brand-mini {
+    display: block;
+    height: 26px;
+    width: 25px;
+    background: url("../img/logo-mini.png") no-repeat scroll left center rgba(0, 0, 0, 0);
+}

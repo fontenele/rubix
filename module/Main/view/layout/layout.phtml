@@ -1,0 +1,84 @@
+<?php echo $this->doctype(); ?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+        <?php echo $this->headTitle('Rubix')->setSeparator(' - ')->setAutoEscape(false) ?>
+        <?php echo $this->headMeta()->appendName('viewport', 'width=device-width, initial-scale=1.0') ?>
+        <?php
+        $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . 'img/favicon.ico'))
+                ->prependStylesheet($this->basePath() . 'css/global.css')
+                ->prependStylesheet($this->basePath() . 'css/bootstrap/bootstrap-theme.min.css')
+                ->prependStylesheet($this->basePath() . 'css/bootstrap/bootstrap.min.css');
+
+        if ($this->lstCss && is_array($this->lstCss)) {
+            foreach ($this->lstCss as $_cssFile) {
+                $this->headLink()->appendStylesheet("{$this->basePath()}css/{$_cssFile}");
+            }
+        }
+
+        echo $this->headLink();
+        ?>
+    </head>
+    <body>
+        <?php
+        echo "<script>\n";
+        echo "\t\tvar msgSuccess = [];\n";
+        echo "\t\tvar msgError = [];\n";
+        if ($this->mensagensSucesso) {
+            foreach ($this->mensagensSucesso as $i => $mensagem) {
+                echo "\t\tmsgSuccess[{$i}] = [];\n";
+                echo "\t\tmsgSuccess[{$i}]['message'] = '{$mensagem['message']}';\n";
+                echo "\t\tmsgSuccess[{$i}]['timeout'] = " . (isset($mensagem['timeout']) ? $mensagem['timeout'] : 0) . ";\n";
+            }
+        }
+        if ($this->mensagensErro) {
+            foreach ($this->mensagensErro as $i => $mensagem) {
+                echo "\t\tmsgError[{$i}] = [];\n";
+                echo "\t\tmsgError[{$i}]['message'] = '{$mensagem['message']}';\n";
+                echo "\t\tmsgError[{$i}]['timeout'] = " . (isset($mensagem['timeout']) ? $mensagem['timeout'] : 0) . ";\n";
+            }
+        }
+        echo "\t\t</script>\n";
+        ?>
+
+        <?php echo $this->partial('layout/top.phtml'); ?>
+
+        <div class="container">
+            <?php echo $this->content; ?>
+        </div>
+
+        <?php echo $this->partial('layout/footer.phtml'); ?>
+
+        <?php
+        $this->headScript()
+                ->prependFile($this->basePath() . 'js/bootstrap/respond.min.js', 'text/javascript', array('conditional' => 'lt IE 9'))
+                ->prependFile($this->basePath() . 'js/bootstrap/html5shiv.js', 'text/javascript', array('conditional' => 'lt IE 9'))
+                ->prependFile($this->basePath() . 'js/noty/themes/rubix.js')
+                ->prependFile($this->basePath() . 'js/noty/themes/default.js')
+                ->prependFile($this->basePath() . 'js/noty/layouts/top.js')
+                ->prependFile($this->basePath() . 'js/noty/jquery.noty.js')
+                ->prependFile($this->basePath() . 'js/bootstrap/bootstrap.min.js')
+                ->prependFile($this->basePath() . 'js/jquery/jquery.validate.js')
+                ->prependFile($this->basePath() . 'js/jquery/jquery-ui.min.js')
+                ->prependFile($this->basePath() . 'js/jquery/jquery-1.10.2.js');
+
+        if ($this->lstExtraJavascripts && is_array($this->lstExtraJavascripts)) {
+            foreach ($this->lstExtraJavascripts as $_jsFile) {
+                $this->headScript()->appendFile("{$this->basePath()}/js/{$_jsFile}");
+            }
+        }
+
+        $this->headScript()->appendFile($this->basePath() . 'js/global.js');
+
+        if ($this->lstJavascripts && is_array($this->lstJavascripts)) {
+            foreach ($this->lstJavascripts as $_jsFile) {
+                $this->headScript()->appendFile("{$this->basePath()}js/modules/{$_jsFile}");
+            }
+        }
+
+        echo $this->headScript();
+        echo $this->inlineScript();
+        ?>
+    </body>
+</html>

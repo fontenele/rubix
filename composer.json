@@ -1,0 +1,16 @@
+{
+    "name": "fontenele/rubix",
+    "description": "Rubix - http://github.com/fontenele/rubix",
+    "authors": [
+        {
+            "name": "Guilherme Fontenele",
+            "email": "guilherme@fontenele.net"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3",
+        "zendframework/zendframework": ">=2.2.0",
+        "doctrine/doctrine-orm-module": ">=0.7.0",
+        "zendframework/zend-developer-tools": "dev-master"
+    }
+}
