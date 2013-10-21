@@ -7,6 +7,8 @@
  * @copyright Copyright (c) 2005-2013 Zend Technologies USA Inc. (http://www.zend.com)
  * @license   http://framework.zend.com/license/new-bsd New BSD License
  */
+$local = include APPLICATION_PATH . 'config/autoload/local.php';
+
 return array(
     'router' => array(
         'routes' => array(
@@ -71,6 +73,18 @@ return array(
                 }
                 Zend\Session\Container::setDefaultManager($sessionManager);
                 return $sessionManager;
+            },
+            'Zend\Db\Adapter\Adapter' => function ($sm) use ($local) {
+                $adapter = new BjyProfiler\Db\Adapter\ProfilingAdapter(array(
+                            'driver' => 'pdo',
+                            'dsn' => $local['db']['dsn'],
+                            'username' => $local['db']['username'],
+                            'password' => $local['db']['password']
+                        ));
+
+                $adapter->setProfiler(new BjyProfiler\Db\Profiler\Profiler);
+                $adapter->injectProfilingStatementPrototype();
+                return $adapter;
             },
         ),
         'abstract_factories' => array(

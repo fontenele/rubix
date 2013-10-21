@@ -3,8 +3,54 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "faab93e0b32d13082931f540e6e60b22",
+    "hash": "4dd2ea9b5f50e5f60b1dbe9f7aeb239c",
     "packages": [
+        {
+            "name": "bjyoungblood/bjy-profiler",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/bjyoungblood/BjyProfiler.git",
+                "reference": "1ad040a59791bf28eafe4d27d485877d925db43e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/bjyoungblood/BjyProfiler/zipball/1ad040a59791bf28eafe4d27d485877d925db43e",
+                "reference": "1ad040a59791bf28eafe4d27d485877d925db43e",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3",
+                "zendframework/zendframework": ">=2.1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "BjyProfiler": "src/"
+                },
+                "classmap": [
+                    "./Module.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Ben Youngblood",
+                    "email": "bx.youngblood@gmail.com",
+                    "homepage": "http://bjyoungblood.com/",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Database profiler for Zend\\Db (also plugin for ZendDeveloperTools)",
+            "homepage": "https://github.com/bjyoungblood/BjyProfiler",
+            "keywords": [
+                "db",
+                "profiler",
+                "zdt",
+                "zf2"
+            ],
+            "time": "2013-07-25 02:55:43"
+        },
         {
             "name": "doctrine/annotations",
             "version": "v1.1.2",
