@@ -10,11 +10,11 @@ if(!defined('APPLICATION_PATH')) {
 
 return array(
     'modules' => array(
+        'Main',
         'ZendDeveloperTools',
+        'BjyProfiler',
         'DoctrineModule',
         'DoctrineORMModule',
-        'BjyProfiler',
-        'Main',
         'Rubix',
         'Services',
         'Test',

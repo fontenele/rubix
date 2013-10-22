@@ -3,8 +3,8 @@
 return array(
     'db' => array(
         'driver' => 'Pdo',
-        'dsn' => 'pgsql:dbname=web-fs;host=localhost',
+        'dsn' => 'pgsql:dbname=rubix;host=localhost',
         'username' => 'postgres',
         'password' => 'postgres'
-    )
+    ),
 );

@@ -355,7 +355,7 @@ abstract class Controller extends AbstractActionController {
      * @return \Doctrine\ORM\EntityManager
      */
     public function getEntityManager() {
-        return $this->getServiceLocator()->get('Doctrine\ORM\EntityManager');
+        return $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
     }
 
     /**
