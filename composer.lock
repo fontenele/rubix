@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "4dd2ea9b5f50e5f60b1dbe9f7aeb239c",
+    "hash": "cad854e680771f7cd2f640131a140000",
     "packages": [
         {
             "name": "bjyoungblood/bjy-profiler",
@@ -752,6 +752,59 @@
             "time": "2013-09-07 16:19:56"
         },
         {
+            "name": "mockery/mockery",
+            "version": "0.8.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/padraic/mockery.git",
+                "reference": "35f0e18022f5538df9df8920a3d96c1761d63220"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/padraic/mockery/zipball/35f0e18022f5538df9df8920a3d96c1761d63220",
+                "reference": "35f0e18022f5538df9df8920a3d96c1761d63220",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.2"
+            },
+            "require-dev": {
+                "hamcrest/hamcrest": "1.1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Mockery": "library/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Pádraic Brady",
+                    "email": "padraic.brady@gmail.com",
+                    "homepage": "http://blog.astrumfutura.com"
+                }
+            ],
+            "description": "Mockery is a simple yet flexible PHP mock object framework for use in unit testing with PHPUnit, PHPSpec or any other testing framework. Its core goal is to offer a test double framework with a succint API capable of clearly defining all possible object operations and interactions using a human readable Domain Specific Language (DSL). Designed as a drop in alternative to PHPUnit's phpunit-mock-objects library, Mockery is easy to integrate with PHPUnit and can operate alongside phpunit-mock-objects without the World ending.",
+            "homepage": "http://github.com/padraic/mockery",
+            "keywords": [
+                "BDD",
+                "TDD",
+                "library",
+                "mock",
+                "mock objects",
+                "mockery",
+                "stub",
+                "test",
+                "test double",
+                "testing"
+            ],
+            "time": "2013-04-01 12:13:17"
+        },
+        {
             "name": "symfony/console",
             "version": "v2.3.6",
             "target-dir": "Symfony/Component/Console",
@@ -810,13 +863,13 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/ZendDeveloperTools.git",
-                "reference": "081ea12e59e8a0ffe84b032e8e804d26d3b1d404"
+                "reference": "9b9311311fdb562494f89e62eb4649d687b58364"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/ZendDeveloperTools/zipball/081ea12e59e8a0ffe84b032e8e804d26d3b1d404",
-                "reference": "081ea12e59e8a0ffe84b032e8e804d26d3b1d404",
-                "shasum": ""
+                "url": "https://packages.zendframework.com/composer/zendframework-zend-developer-tools-9b9311311fdb562494f89e62eb4649d687b58364-zip-aa1c38.zip",
+                "reference": "dev-master",
+                "shasum": "56f6fc6272810e0e056a472f4545506797595c97"
             },
             "require": {
                 "php": ">=5.3.3",
@@ -840,7 +893,6 @@
                     "./Module.php"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "BSD-3-Clause"
             ],
@@ -863,7 +915,11 @@
                 "module",
                 "zf2"
             ],
-            "time": "2013-10-17 08:56:09"
+            "support": {
+                "source": "https://github.com/zendframework/ZendDeveloperTools/tree/0.0.2",
+                "issues": "https://github.com/zendframework/ZendDeveloperTools/issues"
+            },
+            "time": "2013-07-08 19:52:34"
         },
         {
             "name": "zendframework/zendframework",
@@ -875,9 +931,9 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zf2/zipball/5b03d868755c181fc9b5dc56c1f8c26e73ca0bed",
-                "reference": "5b03d868755c181fc9b5dc56c1f8c26e73ca0bed",
-                "shasum": ""
+                "url": "https://packages.zendframework.com/composer/zendframework-zendframework-5b03d868755c181fc9b5dc56c1f8c26e73ca0bed-zip-8b1552.zip",
+                "reference": "2.2.4",
+                "shasum": "f12b12d23c937b8cbd246c6fa56c07fb1df34cb0"
             },
             "require": {
                 "php": ">=5.3.3"
@@ -967,7 +1023,6 @@
                     "Zend\\": "library/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "BSD-3-Clause"
             ],
@@ -977,6 +1032,10 @@
                 "framework",
                 "zf2"
             ],
+            "support": {
+                "source": "https://github.com/zendframework/zf2/tree/release-2.2.4",
+                "issues": "https://github.com/zendframework/zf2/issues"
+            },
             "time": "2013-08-26 15:09:04"
         }
     ],
