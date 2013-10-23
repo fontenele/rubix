@@ -9,7 +9,7 @@ use Zend\Stdlib\ArrayUtils;
 use RuntimeException;
 
 error_reporting(E_ALL | E_STRICT);
-chdir(__DIR__);
+chdir(__DIR__ . '/../../../');
 
 /**
  * Test bootstrap, for setting up autoloading
@@ -23,6 +23,10 @@ class Bootstrap {
     public static function init() {
         self::defineConstants();
 
+        if (file_exists('vendor/autoload.php')) {
+            $loader = include 'vendor/autoload.php';
+        }
+
         if (file_exists(__DIR__ . '/../TestConfig.php')) {
             $testConfig = include __DIR__ . '/../TestConfig.php';
         }
@@ -30,14 +34,14 @@ class Bootstrap {
         if (isset($testConfig['module_listener_options']['module_paths'])) {
             $modulePaths = $testConfig['module_listener_options']['module_paths'];
             foreach ($modulePaths as $modulePath) {
-                if (($path = static::findParentPath($modulePath)) ) {
+                if (($path = static::findParentPath($modulePath))) {
                     $zf2ModulePaths[] = $path;
                 }
             }
         }
 
-        $zf2ModulePaths  = implode(PATH_SEPARATOR, $zf2ModulePaths) . PATH_SEPARATOR;
-        $zf2ModulePaths .= getenv('ZF2_MODULES_TEST_PATHS') ?: (defined('ZF2_MODULES_TEST_PATHS') ? ZF2_MODULES_TEST_PATHS : '');
+        $zf2ModulePaths = implode(PATH_SEPARATOR, $zf2ModulePaths) . PATH_SEPARATOR;
+        $zf2ModulePaths .= getenv('ZF2_MODULES_TEST_PATHS') ? : (defined('ZF2_MODULES_TEST_PATHS') ? ZF2_MODULES_TEST_PATHS : '');
 
         static::initAutoloader();
 
@@ -56,8 +60,8 @@ class Bootstrap {
         $serviceManager->setFactory('ServiceListener', 'Zend\Mvc\Service\ServiceListenerFactory');
 
         $serviceManager->setFactory('SessionStorage', function($sm) {
-                    return new \Rubix\Session\Storage('sesrubixses');
-                });
+            return new \Rubix\Session\Storage('sesrubixses');
+        });
         $serviceManager->setAllowOverride(true);
 
         //$serviceManager->setService('SessionStorage', 'Zend\Mvc\Service\ServiceListenerFactory');
@@ -106,8 +110,9 @@ class Bootstrap {
         $previousDir = '.';
         while (!is_dir($dir . '/' . $path)) {
             $dir = dirname($dir);
-            if ($previousDir === $dir)
+            if ($previousDir === $dir) {
                 return false;
+            }
             $previousDir = $dir;
         }
         return $dir . '/' . $path;
@@ -141,7 +146,7 @@ class Bootstrap {
 
     public static function debug() {
         $params = func_get_args();
-        foreach($params as $k => $param) {
+        foreach ($params as $k => $param) {
             echo "\n\n<b style='color: red'># [{$k}] START</b>\n";
             print_r($param);
             echo "\n<b style='color: red'># [{$k}] END</b>\n\n";

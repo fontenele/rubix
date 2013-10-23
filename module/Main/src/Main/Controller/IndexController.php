@@ -11,7 +11,6 @@
 namespace Main\Controller;
 
 use Rubix\Mvc\Controller;
-use Rubix\Stdlib\Object;
 
 /**
  *
