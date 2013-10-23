@@ -110,7 +110,6 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
-            'home' => 'Main\Controller\IndexController',
         ),
         'factories' => array(
         ),
