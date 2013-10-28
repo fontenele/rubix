@@ -2,8 +2,6 @@
 
 namespace Rubix\Mvc;
 
-use Zend\Stdlib\Hydrator\Reflection;
-
 class Entity extends \ArrayObject {
 
     const GETTER = 'get%s';
