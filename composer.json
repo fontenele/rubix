@@ -12,6 +12,7 @@
         "zendframework/zendframework": ">=2.2.0",
         "doctrine/doctrine-module": ">=0.7.2",
         "doctrine/doctrine-orm-module": ">=0.7.0",
+        "doctrine/common": ">=2.1",
         "zendframework/zend-developer-tools": "dev-master",
         "bjyoungblood/bjy-profiler": "v1.0.0",
         "mockery/mockery": "0.8.0"
