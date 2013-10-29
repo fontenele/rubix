@@ -42,6 +42,17 @@ class Perfis extends Entity {
     private $intSituacao = '2';
 
     /**
+     * Set intCod
+     *
+     * @param integer $intCod
+     * @return Perfis
+     */
+    public function setIntCod($intCod = null) {
+        $this->intCod = $intCod;
+        return $this;
+    }
+
+    /**
      * Get intCod
      *
      * @return integer
@@ -58,7 +69,6 @@ class Perfis extends Entity {
      */
     public function setStrNome($strNome) {
         $this->strNome = $strNome;
-
         return $this;
     }
 
@@ -79,7 +89,6 @@ class Perfis extends Entity {
      */
     public function setIntSituacao($intSituacao) {
         $this->intSituacao = $intSituacao;
-
         return $this;
     }
 

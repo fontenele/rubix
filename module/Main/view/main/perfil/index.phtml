@@ -8,27 +8,37 @@
     <table class="table">
         <thead>
             <tr>
-                <th>ID</th>
-                <th>Nome</th>
-                <th>Situação</th>
-                <th></th>
+                <th width="5%" class="text-center">ID</th>
+                <th width="60%">Nome</th>
+                <th class="text-center" width="10%">Situação</th>
+                <th width="15%"></th>
             </tr>
         </thead>
         <tbody>
             <?php if (count($datagrid)) : ?>
                 <?php foreach ($datagrid as $perfil): ?>
                     <tr>
-                        <td><?php echo $perfil->getIntCod() ?></td>
+                        <td class="text-center"><?php echo $perfil->getIntCod() ?></td>
                         <td><?php echo $perfil->getStrNome() ?></td>
-                        <td><?php echo $perfil->getIntSituacao() == 0 ? 'Inativo' : 'Ativo' ?></td>
-                        <td><a href="<?php echo $this->url(null, array('module' => 'main', 'controller' => 'perfil', 'action' => 'add', 'id' => $perfil->getIntCod())) ?>">Editar</a></td>
+                        <td class="text-center"><?php echo $perfil->getIntSituacao() == 0 ? 'Inativo' : 'Ativo' ?></td>
+                        <td>
+                            <a href="<?php echo $this->url(null, array('module' => 'main', 'controller' => 'perfil', 'action' => 'edit', 'id' => $perfil->getIntCod())) ?>">Editar</a>
+                            <a href="<?php echo $this->url(null, array('module' => 'main', 'controller' => 'perfil', 'action' => 'remove', 'id' => $perfil->getIntCod())) ?>">Remover</a>
+                        </td>
                     </tr>
                 <?php endforeach; ?>
             <?php else: ?>
                 <tr>
-                    <td colspan="3">Nenhum resultado encontrado.</td>
+                    <td colspan="4">Nenhum resultado encontrado.</td>
                 </tr>
             <?php endif; ?>
         </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="4" class="text-center">
+                    <?php echo $this->paginationControl($datagrid, 'sliding', array('components/paginator.phtml', 'Perfis'), array('route' => array('module' => 'main', 'controller' => 'perfil'))) ?>
+                </td>
+            </tr>
+        </tfoot>
     </table>
 </div>
