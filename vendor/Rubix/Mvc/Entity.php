@@ -4,6 +4,8 @@ namespace Rubix\Mvc;
 
 class Entity extends \ArrayObject {
 
+    protected $inputFilter;
+
     const GETTER = 'get%s';
     const DOCTRINE_CLASS = 'DoctrineORMModule\Proxy\__CG__\\';
 
