@@ -64,7 +64,7 @@ abstract class Controller extends AbstractActionController {
 
     /**
      *
-     * @var Acl
+     * @var \Zend\Permissions\Acl\Acl
      */
     protected static $acl;
 
@@ -89,13 +89,15 @@ abstract class Controller extends AbstractActionController {
         $this->booMostrarMenuDireita = true;
         $this->booMostrarRodape = true;
 
+        $this->configureAcl();
+
         if (!$this->isAllowed()) {
-            $this->flashmessenger()->addErrorMessage('Acesso negado.');
-            // @todo fazer redirect correto
-            //$this->redirect()->toRoute('home'); //@todo caso esteja no modulo gerencial, redirecionar para /gerencial ou HTTP_Referer
+            $this->flashmessenger()->addErrorMessage(array('message' => 'Acesso negado.'));
+            $this->redirect()->toRoute(null, array('module' => 'main'));
         }
 
         $this->view = new ViewModel();
+
 
         //$plugin = $this->plugin('url');
         //$this->addBreadcrumb($this->getModuleName() == 'Application' ? '' : $this->getModuleName(), $plugin->fromRoute(strtolower($this->getModuleName())));
@@ -115,8 +117,34 @@ abstract class Controller extends AbstractActionController {
      */
     private function configureAcl() {
         if (!self::$acl) {
+            // Acl
+            $acl = new \Zend\Permissions\Acl\Acl();
+            $roles = include APPLICATION_PATH . '/config/acl.config.php';
+            $allResources = array();
 
+            foreach ($roles as $perfil => $resources) {
+                $role = new \Zend\Permissions\Acl\Role\GenericRole($perfil);
+                $acl->addRole($role);
+
+                $allResources = array_merge($resources, $allResources);
+
+                foreach ($resources as $resource) {
+                    if (!$acl->hasResource($resource)) {
+                        $acl->addResource(new \Zend\Permissions\Acl\Resource\GenericResource($resource));
+                    }
+                }
+
+                foreach ($allResources as $resource) {
+                    $acl->allow($role, $resource);
+                }
+            }
+
+            self::$acl = $acl;
         }
+    }
+
+    public function getAcl() {
+        return self::$acl;
     }
 
     /**
@@ -262,8 +290,21 @@ abstract class Controller extends AbstractActionController {
      */
     protected function isAllowed() {
         if (APPLICATION_LOCKED) {
-            $action = "{$this->params('action')}Action";
-            return self::$acl->hasResource(get_class($this)) ? self::$acl->isAllowed(self::$acl->getPerfil(), get_class($this), $action) : false;
+            $identity = $this->identity();
+            $module = strtolower($this->params('module'));
+            $controller = strtolower($this->params('controller'));
+            $action = strtolower($this->params('action'));
+
+            $resource = "{$module}|{$controller}|{$action}";
+
+            if ($identity && $identity->getIntCod()) {
+                $codPerfil = $identity->getIntPerfil()->getIntCod();
+                return self::$acl->hasResource($resource) ? self::$acl->isAllowed($codPerfil, $resource) : false;
+            }else{
+                return self::$acl->hasResource($resource) ? self::$acl->isAllowed('guess', $resource) : false;
+            }
+
+            return false;
         } else {
             return true;
         }

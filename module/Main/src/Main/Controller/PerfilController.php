@@ -15,22 +15,22 @@ class PerfilController extends Controller {
      * Init
      */
     public function init() {
-        
+
     }
 
     public function indexAction() {
         $this->setViewMessages();
-        
+
         $perfis = $this->getEntityManager()->createQueryBuilder()->select('p')->from('Main\Entity\Perfis', 'p');
-        
+
         $doctrinePaginator = new DoctrinePaginator($perfis);
         $paginatorAdapter = new PaginatorAdapter($doctrinePaginator);
-        
+
         $paginator = new Paginator($paginatorAdapter);
-        
+
         $paginator->setCurrentPageNumber($this->request->getQuery('page'));
         $paginator->setItemCountPerPage(5);
-        
+
         $this->view->setVariable('datagrid', $paginator);
         return $this->view;
     }
@@ -102,16 +102,16 @@ class PerfilController extends Controller {
 
     public function removeAction() {
         $id = $this->getParam('id') ? (int) $this->getParam('id') : null;
-        
+
         if ($id == null) {
             $this->flashMessenger()->addErrorMessage(array('message' => 'Parâmetro não informado.'));
             return $this->redirect()->toUrl(APPLICATION_URL . 'main/perfil');
         }
-        
+
         $post = $this->getEntityManager()->find('\Main\Entity\Perfis', $id);
         $this->getEntityManager()->remove($post);
         $this->getEntityManager()->flush();
-        
+
         $this->flashMessenger()->addSuccessMessage(array('message' => 'Registro removido com sucesso!'));
         return $this->redirect()->toUrl(APPLICATION_URL . 'main/perfil');
     }

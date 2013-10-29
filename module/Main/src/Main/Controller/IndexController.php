@@ -29,11 +29,11 @@ class IndexController extends Controller {
      * @return \Zend\View\Model\ViewModel
      */
     public function indexAction() {
-        $this->setViewMessages();
-
         $user = $this->identity();
 
         if ($user && $user->getIntCod()) {
+            $this->setViewMessages();
+            
             $this->addCss('modules/main/home/index.css');
             $this->addJavascript('modules/main/home/index.js');
 
