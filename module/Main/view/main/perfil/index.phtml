@@ -1,0 +1,34 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        Perfis
+        <p class="pull-right">
+            <a href="<?php echo $this->url(null, array('module' => 'main', 'controller' => 'perfil', 'action' => 'add')); ?>">Novo Perfil</a>
+        </p>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Situação</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php if (count($datagrid)) : ?>
+                <?php foreach ($datagrid as $perfil): ?>
+                    <tr>
+                        <td><?php echo $perfil->getIntCod() ?></td>
+                        <td><?php echo $perfil->getStrNome() ?></td>
+                        <td><?php echo $perfil->getIntSituacao() == 0 ? 'Inativo' : 'Ativo' ?></td>
+                        <td><a href="<?php echo $this->url(null, array('module' => 'main', 'controller' => 'perfil', 'action' => 'add', 'id' => $perfil->getIntCod())) ?>">Editar</a></td>
+                    </tr>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <tr>
+                    <td colspan="3">Nenhum resultado encontrado.</td>
+                </tr>
+            <?php endif; ?>
+        </tbody>
+    </table>
+</div>

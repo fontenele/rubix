@@ -3,14 +3,19 @@
 namespace Main\Form;
 
 use Zend\Form\Form;
+use Zend\InputFilter\InputFilter;
+use Zend\Stdlib\Hydrator\ClassMethods;
 
 class PerfilForm extends Form {
 
     public function __construct() {
         parent::__construct('perfil');
-        $this->setAttribute('method', 'post');
-        $this->setAttribute('class', 'form-horizontal');
-        $this->setAttribute('role', 'form');
+        $this->setAttribute('method', 'post')
+                ->setAttribute('class', 'form-horizontal')
+                ->setAttribute('role', 'form');
+                //->setHydrator(new ClassMethods())
+                //->setInputFilter(new InputFilter());
+
         $this->add(array(
             'name' => 'intCod',
             'attributes' => array(
@@ -34,7 +39,7 @@ class PerfilForm extends Form {
             'name' => 'intSituacao',
             'type' => 'Zend\Form\Element\Checkbox',
             'attributes' => array(
-                //'class' => 'form-control'
+            //'class' => 'form-control'
             ),
             'options' => array(
                 'use_hidden_element' => true,

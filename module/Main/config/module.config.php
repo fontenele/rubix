@@ -20,15 +20,15 @@ return array(
                 'options' => array(
                     'route' => CONTROLLER_ROUTE_HOST . '[/:module][/:controller][/:action][/:id][/]',
                     'constraints' => array(
-                        'module' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'id' => '[a-zA-Z][a-zA-Z0-9_-]*'
+                        'module' => '[a-zA-Z0-9]+',
+                        'controller' => '[a-zA-Z0-9]+',
+                        'action' => '[a-zA-Z0-9]+',
+                        'id' => '[a-zA-Z0-9]+'
                     ),
                     'defaults' => array(
                         'module' => 'Main',
                         'controller' => 'home',
-                        'action' => 'index',
+                        'action' => 'index'
                     ),
                 ),
             ),

@@ -8,7 +8,14 @@ $this->headTitle($title);
     $form->setAttribute('action', $this->url(null, array('module' => 'main', 'controller' => 'perfil', 'action' => 'add')));
     $form->prepare();
 
-    echo "<div class='panel-heading'>{$this->escapeHtml($title)}</div>";
+    echo <<<HTML
+    <div class='panel-heading'>
+        {$this->escapeHtml($title)}
+        <p class='pull-right'>
+            <a href='{$this->url(null, array('module' => 'main', 'controller' => 'perfil'))}'>Lista de Perfis</a>
+        </p>
+    </div>
+HTML;
 
     echo $this->form()->openTag($form);
     echo $this->formHidden($form->get('intCod'));
