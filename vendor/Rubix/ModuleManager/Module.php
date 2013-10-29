@@ -2,7 +2,6 @@
 
 namespace Rubix\ModuleManager;
 
-use Zend\Session\SessionManager;
 use Zend\Session\Container;
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 use Zend\ModuleManager\Feature\ServiceProviderInterface;
@@ -155,6 +154,18 @@ class Module implements AutoloaderProviderInterface, ServiceProviderInterface {
                         $this->handleError($e);
                         die;
                     }
+                    
+                    // Acl
+                    $acl = new \Zend\Permissions\Acl\Acl();
+                    $roles = include APPLICATION_PATH . '/config/acl.config.php';
+                    $allResources = array();
+                    foreach ($roles as $resource) {
+                        $role = new \Zend\Permissions\Acl\Role\GenericRole($resource);
+                        $acl->addRole($role);
+                        //xd($resource, $role);
+                        
+                    }
+                    xd($acl);
 
                     $viewModel->setVariable('module', $routeMatch->getParam('module'));
                     $viewModel->setVariable('controller', $routeMatch->getParam('controller'));
