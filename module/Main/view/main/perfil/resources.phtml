@@ -22,7 +22,7 @@
                         <td><?php echo $route[2] ?></td>
                         <td>
                             <label>
-                                <input name="<?php echo $resource ?>" type="checkbox" />
+                                <input name="<?php echo $resource ?>" type="checkbox" <?php echo in_array($resource, $acessos) ? 'checked="checked"' : '' ?> />
                             </label>
                         </td>
                     </tr>

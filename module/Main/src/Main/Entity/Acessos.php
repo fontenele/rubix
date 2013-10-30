@@ -3,15 +3,20 @@
 namespace Main\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Zend\Form\Annotation;
+use Zend\InputFilter\Factory as InputFactory;
+use Zend\InputFilter\InputFilter;
+use Zend\InputFilter\InputFilterInterface;
+use Rubix\Mvc\Entity;
 
 /**
- * Gerencial.acessos
+ * Acessos
  *
  * @ORM\Table(name="gerencial.acessos", indexes={@ORM\Index(name="IDX_61CDE12C80F9CC2A", columns={"int_perfil"})})
  * @ORM\Entity
  */
-class Acessos
-{
+class Acessos extends Entity {
+
     /**
      * @var integer
      *
@@ -39,15 +44,23 @@ class Acessos
      */
     private $intPerfil;
 
-
+    /**
+     * Set intCod
+     *
+     * @param integer $intCod
+     * @return Perfis
+     */
+    public function setIntCod($intCod = null) {
+        $this->intCod = $intCod;
+        return $this;
+    }
 
     /**
      * Get intCod
      *
      * @return integer 
      */
-    public function getIntCod()
-    {
+    public function getIntCod() {
         return $this->intCod;
     }
 
@@ -57,8 +70,7 @@ class Acessos
      * @param string $strNomeAcesso
      * @return Acessos
      */
-    public function setStrNomeAcesso($strNomeAcesso)
-    {
+    public function setStrNomeAcesso($strNomeAcesso) {
         $this->strNomeAcesso = $strNomeAcesso;
 
         return $this;
@@ -69,8 +81,7 @@ class Acessos
      *
      * @return string 
      */
-    public function getStrNomeAcesso()
-    {
+    public function getStrNomeAcesso() {
         return $this->strNomeAcesso;
     }
 
@@ -80,8 +91,7 @@ class Acessos
      * @param \Main\Entity\Perfis $intPerfil
      * @return Acessos
      */
-    public function setIntPerfil(\Main\Entity\Perfis $intPerfil = null)
-    {
+    public function setIntPerfil(\Main\Entity\Perfis $intPerfil = null) {
         $this->intPerfil = $intPerfil;
 
         return $this;
@@ -92,8 +102,8 @@ class Acessos
      *
      * @return \Main\Entity\Perfis 
      */
-    public function getIntPerfil()
-    {
+    public function getIntPerfil() {
         return $this->intPerfil;
     }
+
 }
