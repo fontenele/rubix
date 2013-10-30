@@ -1,0 +1,40 @@
+<form class="form-horizontal" role="form" action="#" method="post">
+    <div class="panel panel-default">
+        <div class='panel-heading'>
+            <?php echo $perfil->getStrNome() ?>
+            <a class="pull-right" href="#">Selecionar todos</a>
+        </div>
+        <table class="table table-bordered table-condensed table-hover table-responsive table-striped">
+            <thead>
+                <tr>
+                    <th>Módulo</th>
+                    <th>Controller</th>
+                    <th>Action</th>
+                    <th width="5%">Acões</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($resources as $resource): ?>
+                    <?php $route = explode('|', $resource) ?>
+                    <tr>
+                        <td><?php echo $route[0] ?></td>
+                        <td><?php echo $route[1] ?></td>
+                        <td><?php echo $route[2] ?></td>
+                        <td>
+                            <label>
+                                <input name="<?php echo $resource ?>" type="checkbox" />
+                            </label>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="4" class="text-right">
+                        <button type="submit" class="btn btn-primary">Salvar</button>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</form>

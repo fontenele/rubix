@@ -116,4 +116,81 @@ class PerfilController extends Controller {
         return $this->redirect()->toUrl(APPLICATION_URL . 'main/perfil');
     }
 
+    public function resourcesAction() {
+        $this->setViewMessages();
+        $id = $this->getParam('id') ? (int) $this->getParam('id') : null;
+
+        if ($id == null) {
+            $this->flashMessenger()->addErrorMessage(array('message' => 'Parâmetro não informado.'));
+            return $this->redirect()->toUrl(APPLICATION_URL . 'main/perfil');
+        }
+
+        $request = $this->getRequest();
+        if($request->isPost()) {
+            // Salvar acessos
+            xd($id,$request->getPost());
+        }
+
+        $allResources = $this->readResources();
+        $resources = array_shift($allResources);
+        $comments = array_shift($allResources);
+
+        $perfil = $this->getEntityManager()->find('\Main\Entity\Perfis', $id);
+
+        $this->view->setVariable('resources', $resources);
+        $this->view->setVariable('comments', $comments);
+        $this->view->setVariable('perfil', $perfil);
+
+        return $this->view;
+    }
+
+    protected function readResources() {
+        $classForbidden = array(
+            'Zend\Mvc\Controller\AbstractActionController',
+        );
+        $actionsForbidden = array(
+            'init',
+            'setViewMessages',
+            'afterExecuteAction',
+            'notFoundAction',
+            'getMethodFromAction',
+        );
+
+        $modulesDir = APPLICATION_PATH . 'module/';
+        $cfgControllers = include APPLICATION_PATH . 'config/autoload/controllers.php';
+        $controllers = $comments = array();
+
+        foreach ($cfgControllers['invokables'] as $alias => $controller) {
+            $classe = new \ReflectionClass($controller);
+
+            if (!$classe) {
+                continue;
+            }
+
+            foreach ($classe->getMethods(\ReflectionMethod::IS_PUBLIC) as $metodo) {
+                if (preg_match('/Action$/', $metodo->getName(), $res) && !in_array($metodo->getName(), $actionsForbidden) && !in_array($metodo->class, $classForbidden)) {
+                    // Parse resource name
+                    $filter = new \Zend\Filter\Word\CamelCaseToDash();
+                    $methodName = strtolower($filter->filter(substr($metodo->name, 0, -6)));
+
+                    $route = explode('\\', $controller);
+                    $module = strtolower($route[0]);
+
+                    $resource = "{$module}|{$alias}|{$methodName}";
+                    $controllers[] = $resource;
+
+                    // Parse comments
+                    $_comments = trim(str_replace(array('/', '*', '  '), '', $metodo->getDocComment()));
+                    $_comments = explode("\n", $_comments);
+
+                    if (trim($_comments[0])) {
+                        $comments[$resource] = trim($_comments[0]);
+                    }
+                }
+            }
+        }
+
+        return array($controllers, $comments);
+    }
+
 }

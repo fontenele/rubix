@@ -6,7 +6,7 @@ return array(
         'main|home|login',
         'main|home|try-login'
     ),
-    55 => array(
+    /*55 => array(
         'main|home|index',
         'main|home|login',
         'main|home|try-login',
@@ -15,5 +15,5 @@ return array(
         'main|perfil|add',
         'main|perfil|edit',
         'main|perfil|remove'
-    )
+    )*/
 );

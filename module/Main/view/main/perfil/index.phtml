@@ -10,8 +10,9 @@
             <tr>
                 <th width="5%" class="text-center">ID</th>
                 <th width="60%">Nome</th>
+                <th class="text-center" width="10%">Acessos</th>
                 <th class="text-center" width="10%">Situação</th>
-                <th width="15%"></th>
+                <th class="text-center" width="5%">Ações</th>
             </tr>
         </thead>
         <tbody>
@@ -20,22 +21,27 @@
                     <tr>
                         <td class="text-center"><?php echo $perfil->getIntCod() ?></td>
                         <td><?php echo $perfil->getStrNome() ?></td>
-                        <td class="text-center"><?php echo $perfil->getIntSituacao() == 0 ? 'Inativo' : 'Ativo' ?></td>
-                        <td>
-                            <a href="<?php echo $this->url(null, array('module' => 'main', 'controller' => 'perfil', 'action' => 'edit', 'id' => $perfil->getIntCod())) ?>">Editar</a>
-                            <a href="<?php echo $this->url(null, array('module' => 'main', 'controller' => 'perfil', 'action' => 'remove', 'id' => $perfil->getIntCod())) ?>">Remover</a>
+                        <td class="text-center">
+                            <a href="<?php echo $this->url(null, array('module' => 'main', 'controller' => 'perfil', 'action' => 'resources', 'id' => $perfil->getIntCod())) ?>"><span class="icon-link glyphicon glyphicon-new-window"></span></a>
+                        </td>
+                        <td class="text-center">
+                            <span class="glyphicon glyphicon-<?php echo $perfil->getIntSituacao() == 0 ? 'minus-sign' : 'ok-sign icon-success' ?>"></span>
+                        </td>
+                        <td class="text-center">
+                            <a href="<?php echo $this->url(null, array('module' => 'main', 'controller' => 'perfil', 'action' => 'edit', 'id' => $perfil->getIntCod())) ?>"><span class="glyphicon glyphicon-edit"></span></a>
+                            <a href="<?php echo $this->url(null, array('module' => 'main', 'controller' => 'perfil', 'action' => 'remove', 'id' => $perfil->getIntCod())) ?>"><span class="glyphicon glyphicon-remove"></span></a>
                         </td>
                     </tr>
                 <?php endforeach; ?>
             <?php else: ?>
                 <tr>
-                    <td colspan="4">Nenhum resultado encontrado.</td>
+                    <td colspan="5">Nenhum resultado encontrado.</td>
                 </tr>
             <?php endif; ?>
         </tbody>
         <tfoot>
             <tr>
-                <td colspan="4" class="text-center">
+                <td colspan="5" class="text-center">
                     <?php echo $this->paginationControl($datagrid, 'sliding', array('components/paginator.phtml', 'Perfis'), array('route' => array('module' => 'main', 'controller' => 'perfil'))) ?>
                 </td>
             </tr>

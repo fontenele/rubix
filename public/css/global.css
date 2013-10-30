@@ -11,6 +11,14 @@ body {
     color: #000000;
 }
 
+.icon-success {
+    color: #80dc09;
+}
+.icon-link {
+    color: #4BABE2;
+    cursor: pointer;
+}
+
 #layout-topo .brand-mini {
     margin-left: 10px;
     background-position: left;
