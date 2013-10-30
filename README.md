@@ -15,8 +15,8 @@ Rubix PHP Framework (ZF2 extended)
 <h3>Secure</h3>
   All the cryptographic and secure coding tools you need to do things right
 
-<h3>Enterprise Ready</h3>
-  A proven history of success running business critical and high-usage applications
+<h3>Doctrine 2</h3>
+  Now you can use Doctrine 2 or native PDO
 
-<h3>Entities definitions on XML</h3>
-  Now you can define your entities and control all layers just writing simple XMLs
+<h3>PHPUnit</h3>
+  Developers tests their own code
