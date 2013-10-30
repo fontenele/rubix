@@ -119,7 +119,15 @@ abstract class Controller extends AbstractActionController {
         if (!self::$acl) {
             // Acl
             $acl = new \Zend\Permissions\Acl\Acl();
-            $roles = include APPLICATION_PATH . '/config/acl.config.php';
+
+            // Session Acl
+            $sessionAcl = new \Zend\Session\Container('acl');
+            if ($sessionAcl->offsetExists('roles')) {
+                $roles = $sessionAcl->offsetGet('roles');
+            } else {
+                $roles = include APPLICATION_PATH . '/config/acl.config.php';
+            }
+            
             $allResources = array();
 
             foreach ($roles as $perfil => $resources) {
@@ -161,7 +169,7 @@ abstract class Controller extends AbstractActionController {
         $layout->booMostrarRodape = $this->booMostrarRodape;
 
         $_url = "{$this->getRequest()->getUri()->getScheme()}://{$this->getRequest()->getUri()->getHost()}{$this->getRequest()->getUri()->getPath()}";
-        $map = str_replace(APPLICATION_URL, '', $_url);
+        $map = strtolower("{$this->getParam('module')}/{$this->getParam('controller')}/{$this->getParam('action')}");
 
         if (file_exists("public/js/modules/{$map}.js")) {
             $this->lstJavascript[] = "modules/{$map}.js";
@@ -300,7 +308,7 @@ abstract class Controller extends AbstractActionController {
             if ($identity && $identity->getIntCod()) {
                 $codPerfil = $identity->getIntPerfil()->getIntCod();
                 return self::$acl->hasResource($resource) ? self::$acl->isAllowed($codPerfil, $resource) : false;
-            }else{
+            } else {
                 return self::$acl->hasResource($resource) ? self::$acl->isAllowed('guess', $resource) : false;
             }
 

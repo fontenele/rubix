@@ -33,7 +33,7 @@ class IndexController extends Controller {
 
         if ($user && $user->getIntCod()) {
             $this->setViewMessages();
-            
+
             $this->addCss('modules/main/home/index.css');
             $this->addJavascript('modules/main/home/index.js');
 
@@ -48,21 +48,6 @@ class IndexController extends Controller {
      * @return \Zend\View\Model\ViewModel
      */
     public function loginAction() {
-        /* $objManager = $this->getServiceLocator()->get('Doctrine\ORM\EntityManager');
-
-          $car1 = $objManager->find('Main\Entity\Usuarios', 1);
-          xd($car1->getStrNome(), $car1->getIntPerfil()->getStrNome(), $car1->getDatUltimoLogin());
-
-          $car2 = $objManager->find('Main\Entity\Perfis', 6);
-          xd($car2); */
-
-        /* $user = new \Main\Entity\Carro();
-
-          $user->setMarca('VW');
-          $objManager->persist($user);
-          $objManager->flush();
-          xd($user->getId()); */
-
         $this->setViewMessages();
 
         $layout = $this->setLayoutLight();
@@ -101,8 +86,24 @@ class IndexController extends Controller {
 
         $authResult = $authService->authenticate();
         if ($authResult->isValid()) {
+            // Save user
             $usuario = $authResult->getIdentity();
             $authService->getStorage()->write($usuario);
+
+            // Save resources
+            $acessos = array();
+            $acessosBanco = $this->getEntityManager()->getRepository('\Main\Entity\Acessos')->findBy(array('intPerfil' => $usuario->getIntPerfil()->getIntCod()));
+
+            foreach($acessosBanco as $acesso) {
+                $acessos[] = $acesso->getStrNomeAcesso();
+            }
+
+            $roles = include APPLICATION_PATH . '/config/acl.config.php';
+            $roles[$usuario->getIntPerfil()->getIntCod()] = $acessos;
+
+            $sessionAcl = new \Zend\Session\Container('acl');
+            $sessionAcl->offsetSet('roles', $roles);
+
             $this->flashMessenger()->addSuccessMessage(array('message' => 'Bem vindo!', 'timeout' => 5000));
             return $this->redirect()->toUrl(APPLICATION_URL);
         } else {

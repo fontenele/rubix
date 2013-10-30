@@ -15,7 +15,7 @@ class PerfilController extends Controller {
      * Init
      */
     public function init() {
-        
+
     }
 
     public function indexAction() {
@@ -124,26 +124,26 @@ class PerfilController extends Controller {
             $this->flashMessenger()->addErrorMessage(array('message' => 'Parâmetro não informado.'));
             return $this->redirect()->toUrl(APPLICATION_URL . 'main/perfil');
         }
-        
+
         $acessos = array();
-        $acessosBanco = $this->getEntityManager()->getRepository('\Main\Entity\Acessos')->findBy(array('intPerfil' => 4));
-        
+        $acessosBanco = $this->getEntityManager()->getRepository('\Main\Entity\Acessos')->findBy(array('intPerfil' => $id));
+
         foreach($acessosBanco as $acesso) {
             $acessos[] = $acesso->getStrNomeAcesso();
         }
-        
+
         $perfil = $this->getEntityManager()->find('\Main\Entity\Perfis', $id);
 
         $request = $this->getRequest();
         if ($request->isPost()) {
             $post = $request->getPost();
-            
+
             $removidos = $this->getEntityManager()->createQueryBuilder()->delete('Main\Entity\Acessos', 'p')->where('p.intPerfil = ' . $id);
             $removidos->getQuery()->execute();
-            
+
             $this->getEntityManager()->beginTransaction();
             $erro = false;
-            
+
             // Salvar acessos
             foreach ($post as $resource => $status) {
                 $acesso = new \Main\Entity\Acessos();
@@ -152,14 +152,14 @@ class PerfilController extends Controller {
 
                 $this->getEntityManager()->persist($acesso);
                 $this->getEntityManager()->flush();
-                
+
                 if(!$acesso->getIntCod()) {
                     $this->getEntityManager()->rollback();
                     $erro = true;
                     break;
                 }
             }
-            
+
             if($erro) {
                 $this->flashMessenger()->addErrorMessage(array('message' => 'Falha ao salvar acessos.'));
                 return $this->redirect()->toUrl(APPLICATION_URL . 'main/perfil/resources/' . $id);
