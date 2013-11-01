@@ -210,7 +210,7 @@ class Usuarios extends Entity {
     public function exchangeArray($data) {
         $this->intCod = (isset($data['intCod'])) ? $data['intCod'] : null;
         $this->strLogin = (isset($data['strLogin'])) ? $data['strLogin'] : null;
-        $this->strSenha = (isset($data['strSenha'])) ? $data['strSenha'] : null;
+        $this->strSenha = (isset($data['strSenha'])) ? md5($data['strSenha']) : null;
         $this->strNome = (isset($data['strNome'])) ? $data['strNome'] : null;
         $this->strEmail = (isset($data['strEmail'])) ? $data['strEmail'] : null;
         $this->intPerfil = (isset($data['intPerfil'])) ? $this->getEntityManager()->find('Main\Entity\Perfis', $data['intPerfil']) : '';
