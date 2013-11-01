@@ -9,7 +9,7 @@ class Usuario extends Service {
     public function init() {
 
     }
-
+    
     public function fAutenticarUsuario($user, $pass, $ip, $sessionID) {
         $result = $this->getModel('Main\Model\Usuario')->fAutenticarUsuario($user, $pass, $ip, $sessionID);
         unset($result['desSenha']);

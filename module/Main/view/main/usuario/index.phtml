@@ -1,0 +1,50 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        Usuários
+        <p class="pull-right">
+            <a href="<?php echo $this->url(null, array('module' => 'main', 'controller' => 'usuario', 'action' => 'add')); ?>">Novo Usuário</a>
+        </p>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th width="5%" class="text-center">ID</th>
+                <th width="10%">Login</th>
+                <th width="30%">Nome</th>
+                <th width="15%">E-mail</th>
+                <th width="20%">Perfil</th>
+                <th width="15%">Últ. Login</th>
+                <th width="5%">Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php if (count($datagrid)) : ?>
+                <?php foreach ($datagrid as $usuario): ?>
+                    <tr>
+                        <td class="text-center"><?php echo $usuario->getIntCod() ?></td>
+                        <td><?php echo $usuario->getStrLogin() ?></td>
+                        <td><?php echo $usuario->getStrNome() ?></td>
+                        <td><?php echo $usuario->getStrEmail() ?></td>
+                        <td><?php echo $usuario->getIntPerfil()->getStrNome() ?></td>
+                        <td><?php echo $usuario->getDatUltimoLogin()->format('d/m/Y H:i:s') ?></td>
+                        <td class="text-center">
+                            <a href="<?php echo $this->url(null, array('module' => 'main', 'controller' => 'usuario', 'action' => 'edit', 'id' => $usuario->getIntCod())) ?>"><span class="glyphicon glyphicon-edit"></span></a>
+                            <a href="<?php echo $this->url(null, array('module' => 'main', 'controller' => 'usuario', 'action' => 'remove', 'id' => $usuario->getIntCod())) ?>"><span class="glyphicon glyphicon-remove"></span></a>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <tr>
+                    <td colspan="7">Nenhum resultado encontrado.</td>
+                </tr>
+            <?php endif; ?>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="7" class="text-center">
+                    <?php echo $this->paginationControl($datagrid, 'sliding', array('components/paginator.phtml', 'Usuarios'), array('route' => array('module' => 'main', 'controller' => 'usuario'))) ?>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+</div>

@@ -3,6 +3,10 @@
 namespace Main\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Zend\Form\Annotation;
+use Zend\InputFilter\Factory as InputFactory;
+use Zend\InputFilter\InputFilter;
+use Zend\InputFilter\InputFilterInterface;
 use Rubix\Mvc\Entity;
 
 /**
@@ -201,6 +205,115 @@ class Usuarios extends Entity {
      */
     public function getIntPerfil() {
         return $this->intPerfil;
+    }
+    
+    public function exchangeArray($data) {
+        $this->intCod = (isset($data['intCod'])) ? $data['intCod'] : null;
+        $this->strLogin = (isset($data['strLogin'])) ? $data['strLogin'] : null;
+        $this->strSenha = (isset($data['strSenha'])) ? $data['strSenha'] : null;
+        $this->strNome = (isset($data['strNome'])) ? $data['strNome'] : null;
+        $this->strEmail = (isset($data['strEmail'])) ? $data['strEmail'] : null;
+        $this->intPerfil = (isset($data['intPerfil'])) ? $this->getEntityManager()->find('Main\Entity\Perfis', $data['intPerfil']) : '';
+        $this->datUltimoLogin = (isset($data['datUltimoLogin'])) ? $data['datUltimoLogin'] : new \DateTime('NOW');
+    }
+    
+    public function setInputFilter(InputFilterInterface $inputFilter) {
+        throw new \Exception("Not used");
+    }
+
+    public function getInputFilter() {
+        if (!$this->inputFilter) {
+            $inputFilter = new InputFilter();
+            $factory = new InputFactory();
+
+            $inputFilter->add($factory->createInput(array(
+                        'name' => 'intCod',
+                        'required' => false,
+                        'filters' => array(
+                            array('name' => 'Int'),
+                        ),
+            )));
+
+            $inputFilter->add($factory->createInput(array(
+                        'name' => 'strLogin',
+                        'required' => true,
+                        'filters' => array(
+                            array('name' => 'StripTags'),
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array(
+                                'name' => 'StringLength',
+                                'options' => array(
+                                    'encoding' => 'UTF-8',
+                                    'min' => 1,
+                                    'max' => 12,
+                                ),
+                            ),
+                        ),
+            )));
+            
+            $inputFilter->add($factory->createInput(array(
+                        'name' => 'strSenha',
+                        'required' => true,
+                        'filters' => array(
+                            array('name' => 'StripTags'),
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array(
+                                'name' => 'StringLength',
+                                'options' => array(
+                                    'encoding' => 'UTF-8',
+                                    'min' => 1,
+                                    'max' => 32,
+                                ),
+                            ),
+                        ),
+            )));
+            
+            $inputFilter->add($factory->createInput(array(
+                        'name' => 'strNome',
+                        'required' => true,
+                        'filters' => array(
+                            array('name' => 'StripTags'),
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array(
+                                'name' => 'StringLength',
+                                'options' => array(
+                                    'encoding' => 'UTF-8',
+                                    'min' => 1,
+                                    'max' => 200,
+                                ),
+                            ),
+                        ),
+            )));
+            
+            $inputFilter->add($factory->createInput(array(
+                        'name' => 'strEmail',
+                        'required' => true,
+                        'filters' => array(
+                            array('name' => 'StripTags'),
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array(
+                                'name' => 'StringLength',
+                                'options' => array(
+                                    'encoding' => 'UTF-8',
+                                    'min' => 1,
+                                    'max' => 100,
+                                ),
+                            ),
+                        ),
+            )));
+
+            $this->inputFilter = $inputFilter;
+        }
+
+        return $this->inputFilter;
     }
 
 }

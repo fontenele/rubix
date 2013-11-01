@@ -2,9 +2,7 @@
 
 namespace Main\Form;
 
-use Zend\Form\Form;
-use Zend\InputFilter\InputFilter;
-use Zend\Stdlib\Hydrator\ClassMethods;
+use Rubix\Mvc\Form;
 
 class PerfilForm extends Form {
 

@@ -1,0 +1,64 @@
+<?php
+$title = 'Novo Usuário';
+$this->headTitle($title);
+?>
+<div class="panel panel-default">
+    <?php
+    $form = $this->form;
+    $form->setAttribute('action', $this->url(null, array('module' => 'main', 'controller' => 'usuario', 'action' => 'add')));
+    $form->prepare();
+
+    echo <<<HTML
+    <div class='panel-heading'>
+        {$this->escapeHtml($title)}
+        <p class='pull-right'>
+            <a href='{$this->url(null, array('module' => 'main', 'controller' => 'usuario'))}'>Lista de Usuários</a>
+        </p>
+    </div>
+HTML;
+
+    echo $this->form()->openTag($form);
+    echo $this->formHidden($form->get('intCod'));
+    ?>
+    <div class="form-group">
+        <?php echo $this->formLabel($form->get('strLogin')); ?>
+        <?php echo $this->formElementErrors($form->get('strLogin')); ?>
+        <div class="col-lg-6">
+            <?php echo $this->formElement($form->get('strLogin')); ?>
+        </div>
+    </div>
+    <div class="form-group">
+        <?php echo $this->formLabel($form->get('strSenha')); ?>
+        <?php echo $this->formElementErrors($form->get('strSenha')); ?>
+        <div class="col-lg-6">
+            <?php echo $this->formPassword($form->get('strSenha')); ?>
+        </div>
+    </div>
+    <div class="form-group">
+        <?php echo $this->formLabel($form->get('strNome')); ?>
+        <?php echo $this->formElementErrors($form->get('strNome')); ?>
+        <div class="col-lg-6">
+            <?php echo $this->formElement($form->get('strNome')); ?>
+        </div>
+    </div>
+    <div class="form-group">
+        <?php echo $this->formLabel($form->get('strEmail')); ?>
+        <?php echo $this->formElementErrors($form->get('strEmail')); ?>
+        <div class="col-lg-6">
+            <?php echo $this->formElement($form->get('strEmail')); ?>
+        </div>
+    </div>
+    <div class="form-group">
+        <?php echo $this->formLabel($form->get('intPerfil')); ?>
+        <?php echo $this->formElementErrors($form->get('intPerfil')); ?>
+        <div class="col-lg-6">
+            <?php echo $this->formSelect($form->get('intPerfil')); ?>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-lg-offset-2 col-lg-10">
+            <?php echo $this->formSubmit($form->get('submit')); ?>
+        </div>
+    </div>
+    <?php echo $this->form()->closeTag(); ?>
+</div>
