@@ -6,13 +6,11 @@ use Rubix\Mvc\Form;
 
 class PerfilForm extends Form {
 
-    public function __construct() {
-        parent::__construct('perfil');
+    public function configure() {
+        $this->setName('perfil');
         $this->setAttribute('method', 'post')
                 ->setAttribute('class', 'form-horizontal')
                 ->setAttribute('role', 'form');
-                //->setHydrator(new ClassMethods())
-                //->setInputFilter(new InputFilter());
 
         $this->add(array(
             'name' => 'intCod',

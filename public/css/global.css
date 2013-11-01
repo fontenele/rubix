@@ -65,3 +65,22 @@ body {
     padding-top: 5px;
     color: #333333;
 }
+
+.input-1 {
+    width: 15%;
+}
+.input-2 {
+    width: 30%;
+}
+.input-3 {
+    width: 45%;
+}
+.input-4 {
+    width: 60%;
+}
+.input-5 {
+    width: 75%;
+}
+.input-6 {
+    width: 90%;
+}

@@ -10,7 +10,7 @@ use Zend\InputFilter\InputFilterInterface;
 use Rubix\Mvc\Entity;
 
 /**
- * Gerencial.usuarios
+ * Usuarios
  *
  * @ORM\Table(name="gerencial.usuarios", indexes={@ORM\Index(name="IDX_F5284DE580F9CC2A", columns={"int_perfil"})})
  * @ORM\Entity
