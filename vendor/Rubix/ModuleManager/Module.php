@@ -54,11 +54,6 @@ class Module implements AutoloaderProviderInterface, ServiceProviderInterface {
         } elseif ($instance instanceof \Rubix\Mvc\Service) {
             $instance->setDbAdapter($sm->get('Zend\Db\Adapter\Adapter'));
         }
-
-        if (is_object($instance) && property_exists($instance, 'owner')) {
-            $config = $sm->get('config');
-            $instance->owner = $config['db']['owner'];
-        }
     }
         );
     }

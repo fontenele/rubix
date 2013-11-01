@@ -406,6 +406,27 @@ abstract class Controller extends AbstractActionController {
     public function getEntityManager() {
         return $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
     }
+    
+    /**
+     * 
+     * @param string $name
+     * @return \Rubix\Mvc\Form
+     */
+    public function getForm($name = null, $options = array()) {
+        $form = new $name(null, $options, $this->getServiceLocator());
+        return $form;
+    }
+    
+    /**
+     * 
+     * @param string $name
+     * @return \Rubix\Mvc\Entity
+     */
+    public function getEntity($name) {
+        $entity = new $name();
+        $entity->setServiceManager($this->getServiceLocator());
+        return $entity;
+    }
 
     /**
      *

@@ -2,8 +2,11 @@
 
 namespace Rubix\Mvc;
 
+use Zend\ServiceManager\ServiceManager;
+
 class Entity extends \ArrayObject {
 
+    protected $sm;
     protected $inputFilter;
 
     const GETTER = 'get%s';
@@ -25,6 +28,25 @@ class Entity extends \ArrayObject {
             }
         }
         return $copy;
+    }
+
+    /**
+     * Set Entity Manager
+     * @param \Zend\ServiceManager\ServiceManager $sm
+     */
+    public function setServiceManager(ServiceManager $sm) {
+        $this->sm = $sm;
+    }
+    
+    /**
+     * Get Entity Manager
+     * @return \Doctrine\ORM\EntityManager
+     */
+    public function getEntityManager() {
+        if(!$this->sm) {
+            throw new \Exception('ServiceManager not found. (' . get_class($this) . '::getEntityManager())');
+        }
+        return $this->sm->get('doctrine.entitymanager.orm_default');
     }
 
 }

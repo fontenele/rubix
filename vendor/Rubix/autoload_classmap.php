@@ -8,6 +8,7 @@ return array(
     'Rubix\Mvc\Controller' => __DIR__ . '/Mvc/Controller.php',
     'Rubix\Mvc\Service' => __DIR__ . '/Mvc/Service.php',
     'Rubix\Mvc\Model' => __DIR__ . '/Mvc/Model.php',
+    'Rubix\Mvc\Form' => __DIR__ . '/Mvc/Form.php',
     'Rubix\Mvc\Entity' => __DIR__ . '/Mvc/Entity.php',
     'Rubix\ModuleManager\Module' => __DIR__ . '/ModuleManager/Module.php',
     'Rubix\View\Helper\BasePath' => __DIR__ . '/View/Helper/BasePath.php',
