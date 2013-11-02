@@ -1,0 +1,72 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        Usuários
+        <p class="pull-right">
+            <a href="<?php echo $this->url(null, array('module' => 'main', 'controller' => 'usuario', 'action' => 'add')); ?>">Novo Usuário</a>
+        </p>
+    </div>
+    <table class="table table-bordered table-condensed table-hover table-responsive table-striped">
+        <thead>
+            <tr>
+                <?php foreach ($columns as $col): ?>
+                    <?php $attrs = ''; ?>
+                    <?php if(isset($col['options']) && isset($col['options']['attributes'])): ?>
+                        <?php foreach($col['options']['attributes'] as $attr => $val): ?>
+                            <?php $attrs.= "{$attr}=\"{$val}\" "; ?>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                    <th <?php echo $attrs ?>><?php echo $col['label'] ?></th>
+                <?php endforeach; ?>
+                <?php if(count($actions)): ?>
+                    <th width="5%">Ações</th>
+                <?php endif; ?>
+            </tr>
+        </thead>
+        <tbody>
+            <?php if(count($data)): ?>
+                <?php foreach ($data as $row): ?>
+                    <tr>
+                        <?php foreach ($columns as $col => $config): ?>
+
+                            <?php $attrs = ''; ?>
+
+                            <?php if(isset($config['options']) && isset($config['options']['attributes'])): ?>
+                                <?php foreach($config['options']['attributes'] as $attr => $attrVal): ?>
+
+                                    <?php $attrs.= "{$attr}=\"{$attrVal}\" "; ?>
+
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                            <?php $methodGet = "get" . ucfirst($col); ?>
+                            <?php $val = $row->$methodGet(); ?>
+                            <td <?php echo $attrs ?>><?php echo $config['methodGet'] ? call_user_func($config['methodGet'], $val, $row) : $val ?></td>
+                        <?php endforeach; ?>
+
+                        <?php if(count($actions)): ?>
+                            <td class="text-center">
+                                <?php foreach($actions as $type => $action): ?>
+                                    <?php $urlAction = array() ?>
+                                    <?php if($type == \Rubix\View\Components\Datagrid::ACTION_EDIT) { $urlAction = $url['edit']; } ?>
+                                    <?php if($type == \Rubix\View\Components\Datagrid::ACTION_REMOVE) { $urlAction = $url['remove']; } ?>
+                                    <?php $urlAction['id'] = $row->$getIdMethodName(); ?>
+                                    <a href="<?php echo $this->url(null, $urlAction) ?>"><span class="glyphicon glyphicon-<?php echo $action['icon'] ?>"></span></a>
+                                <?php endforeach; ?>
+                            </td>
+                        <?php endif; ?>
+                    </tr>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <tr>
+                    <td colspan="<?php echo count($columns) + count($actions) ?>"><?php echo $this->translator('Nenhum resultado encontrado.') ?></td>
+                </tr>
+            <?php endif; ?>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="<?php echo count($columns) + count($actions) ?>" class="text-center">
+                    <?php echo $this->paginationControl($data, 'sliding', array('components/paginator.phtml', 'Usuarios'), array('route' => $url['paginator'])) ?>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+</div>

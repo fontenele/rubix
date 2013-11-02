@@ -13,24 +13,55 @@ class UsuarioController extends Controller {
      * Init
      */
     public function init() {
-        
+
     }
 
+    /**
+     * Primary action
+     * @return \Zend\View\Model\ViewModel
+     */
     public function indexAction() {
+        // Set View Error/Success messages
         $this->setViewMessages();
 
+        // Generate Query Builder
         $usuarios = $this->getEntityManager()->createQueryBuilder()->select('u')->from('Main\Entity\Usuarios', 'u');
 
-        $doctrinePaginator = new DoctrinePaginator($usuarios);
-        $paginatorAdapter = new PaginatorAdapter($doctrinePaginator);
+        // Datagrid
+        $dg = new \Rubix\View\Components\Datagrid($this->getServiceLocator());
+        $dg->setQueryBuilder($usuarios);
 
-        $paginator = new Paginator($paginatorAdapter);
+        // Columns
+        $dg->addColumn('ID', 'intCod', array('attributes' => array('width' => '5%', 'class' => 'text-center')));
+        $dg->addColumn('Login', 'strLogin');
+        $dg->addColumn('Nome', 'strNome');
+        $dg->addColumn('E-mail', 'strEmail');
+        $dg->addColumn('Perfil', 'intPerfil', null, __CLASS__ . '::dg_Perfil');
+        $dg->addColumn('Últ. Acesso', 'datUltimoLogin', null, __CLASS__ . '::dg_DtUltimoAcesso');
 
-        $paginator->setCurrentPageNumber($this->request->getQuery('page'));
-        $paginator->setItemCountPerPage(5);
+        // Row Actions
+        $dg->setGetIdMethodName('getIntCod');
+        $dg->addAction(\Rubix\View\Components\Datagrid::ACTION_EDIT, 'edit');
+        $dg->addAction(\Rubix\View\Components\Datagrid::ACTION_REMOVE, 'remove');
 
-        $this->view->setVariable('datagrid', $paginator);
+        // Define Routes
+        $dg->url['edit']['module'] = 'main';
+        $dg->url['edit']['controller'] = 'usuario';
+        $dg->url['remove']['module'] = 'main';
+        $dg->url['remove']['controller'] = 'usuario';
+        $dg->url['paginator']['module'] = 'main';
+        $dg->url['paginator']['controller'] = 'usuario';
+
+        $this->view->setVariable('dg', $dg);
         return $this->view;
+    }
+
+    public static function dg_Perfil($val, $item) {
+        return $item->getStrNome();
+    }
+
+    public static function dg_DtUltimoAcesso($val, $item) {
+        return $val->format('d/m/Y H:i:s');
     }
 
     public function addAction() {

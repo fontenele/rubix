@@ -3,14 +3,13 @@
 namespace Main\Form;
 
 use Rubix\Mvc\Form;
-use Main\Service\Perfil;
 
 class UsuarioForm extends Form {
 
     public function configure() {
-        
+
         $this->setName('usuario');
-        
+
         $this->setAttribute('method', 'post')
                 ->setAttribute('class', 'form-horizontal')
                 ->setAttribute('role', 'form');

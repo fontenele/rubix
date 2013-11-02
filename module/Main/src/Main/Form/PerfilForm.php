@@ -7,7 +7,9 @@ use Rubix\Mvc\Form;
 class PerfilForm extends Form {
 
     public function configure() {
+
         $this->setName('perfil');
+
         $this->setAttribute('method', 'post')
                 ->setAttribute('class', 'form-horizontal')
                 ->setAttribute('role', 'form');
