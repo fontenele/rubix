@@ -12,7 +12,7 @@ class Entity extends \ArrayObject {
     const GETTER = 'get%s';
     const DOCTRINE_CLASS = 'DoctrineORMModule\Proxy\__CG__\\';
 
-    public function getArrayCopy() {
+    public function getArrayCopy($filter = true) {
         $copy = array();
         $reflection = new \ReflectionClass($this);
         $attrs = $reflection->getProperties(\ReflectionProperty::IS_PRIVATE);
@@ -20,7 +20,7 @@ class Entity extends \ArrayObject {
             if ($attr->class == get_class($this)) {
                 $method = sprintf(self::GETTER, ucfirst($attr->name));
                 $val = $this->$method();
-                if (is_object($val) && substr(get_class($val), 0, 31) == self::DOCTRINE_CLASS) {
+                if ($filter && is_object($val) && substr(get_class($val), 0, 31) == self::DOCTRINE_CLASS) {
                     $val = '{' . str_replace(self::DOCTRINE_CLASS, '', get_class($val)) . '}';
                 }
 
@@ -37,7 +37,7 @@ class Entity extends \ArrayObject {
     public function setServiceManager(ServiceManager $sm) {
         $this->sm = $sm;
     }
-    
+
     /**
      * Get Entity Manager
      * @return \Doctrine\ORM\EntityManager

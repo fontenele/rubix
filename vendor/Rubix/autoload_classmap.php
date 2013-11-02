@@ -12,6 +12,7 @@ return array(
     'Rubix\Mvc\Entity' => __DIR__ . '/Mvc/Entity.php',
     'Rubix\ModuleManager\Module' => __DIR__ . '/ModuleManager/Module.php',
     'Rubix\View\Helper\BasePath' => __DIR__ . '/View/Helper/BasePath.php',
+    'Rubix\View\Components\Datagrid' => __DIR__ . '/View/Components/Datagrid.php',
     'Rubix\Stdlib\Object' => __DIR__ . '/Stdlib/Object.php',
     'Rubix\Auth\AuthStorage' => __DIR__ . '/Auth/AuthStorage.php',
     'Rubix\Session\Storage' => __DIR__ . '/Session/Storage.php',
