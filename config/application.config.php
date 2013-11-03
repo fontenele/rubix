@@ -11,7 +11,7 @@ if(!defined('APPLICATION_PATH')) {
 return array(
     'modules' => array(
         'Main',
-        'ZendDeveloperTools',
+        //'ZendDeveloperTools',
         'BjyProfiler',
         'DoctrineModule',
         'DoctrineORMModule',

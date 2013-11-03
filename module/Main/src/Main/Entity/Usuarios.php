@@ -60,7 +60,7 @@ class Usuarios extends Entity {
      *
      * @ORM\Column(name="dat_ultimo_login", type="datetime", nullable=true)
      */
-    private $datUltimoLogin = 'now()';
+    private $datUltimoLogin;
 
     /**
      * @var \Main\Entity\Perfis
@@ -206,7 +206,7 @@ class Usuarios extends Entity {
     public function getIntPerfil() {
         return $this->intPerfil;
     }
-    
+
     public function exchangeArray($data) {
         $this->intCod = (isset($data['intCod'])) ? $data['intCod'] : null;
         $this->strLogin = (isset($data['strLogin'])) ? $data['strLogin'] : null;
@@ -216,7 +216,7 @@ class Usuarios extends Entity {
         $this->intPerfil = (isset($data['intPerfil'])) ? $this->getEntityManager()->find('Main\Entity\Perfis', $data['intPerfil']) : '';
         $this->datUltimoLogin = (isset($data['datUltimoLogin'])) ? $data['datUltimoLogin'] : new \DateTime('NOW');
     }
-    
+
     public function setInputFilter(InputFilterInterface $inputFilter) {
         throw new \Exception("Not used");
     }
@@ -252,7 +252,7 @@ class Usuarios extends Entity {
                             ),
                         ),
             )));
-            
+
             $inputFilter->add($factory->createInput(array(
                         'name' => 'strSenha',
                         'required' => true,
@@ -271,7 +271,7 @@ class Usuarios extends Entity {
                             ),
                         ),
             )));
-            
+
             $inputFilter->add($factory->createInput(array(
                         'name' => 'strNome',
                         'required' => true,
@@ -290,7 +290,7 @@ class Usuarios extends Entity {
                             ),
                         ),
             )));
-            
+
             $inputFilter->add($factory->createInput(array(
                         'name' => 'strEmail',
                         'required' => true,

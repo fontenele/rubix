@@ -25,19 +25,26 @@ class UsuarioController extends Controller {
         $this->setViewMessages();
 
         // Generate Query Builder
-        $usuarios = $this->getEntityManager()->createQueryBuilder()->select('u')->from('Main\Entity\Usuarios', 'u');
+        $usuarios = $this->getEntityManager()->createQueryBuilder()
+                ->select('u')
+                ->from('Main\Entity\Usuarios', 'u')
+                ->innerJoin('u.intPerfil', 'p');
 
         // Datagrid
         $dg = new \Rubix\View\Components\Datagrid($this->getServiceLocator());
-        $dg->setQueryBuilder($usuarios);
+        $dg->setTitle('Usuários');
 
         // Columns
-        $dg->addColumn('ID', 'intCod', array('attributes' => array('width' => '5%', 'class' => 'text-center')));
-        $dg->addColumn('Login', 'strLogin');
-        $dg->addColumn('Nome', 'strNome');
-        $dg->addColumn('E-mail', 'strEmail');
-        $dg->addColumn('Perfil', 'intPerfil', null, __CLASS__ . '::dg_Perfil');
-        $dg->addColumn('Últ. Acesso', 'datUltimoLogin', null, __CLASS__ . '::dg_DtUltimoAcesso');
+        $dg->addColumn('ID', 'intCod', array('attributes' => array('width' => '5%', 'class' => 'text-center')), null, 'u.intCod')
+                ->addColumn('Login', 'strLogin', null, null, 'u.strLogin')
+                ->addColumn('Nome', 'strNome', null, null, 'u.strNome')
+                ->addColumn('E-mail', 'strEmail', null, null, 'u.strEmail')
+                ->addColumn('Perfil', 'intPerfil', null, __CLASS__ . '::dg_Perfil', 'p.strNome')
+                ->addColumn('Últ. Acesso', 'datUltimoLogin', null, __CLASS__ . '::dg_DtUltimoAcesso', 'u.datUltimoLogin')
+                ->setQueryBuilder($usuarios);
+
+        // Header buttons
+        $dg->addHeaderButton('Novo Usuário', array('module' => 'main', 'controller' => 'usuario', 'action' => 'add'), 'plus');
 
         // Row Actions
         $dg->setGetIdMethodName('getIntCod');
@@ -45,19 +52,16 @@ class UsuarioController extends Controller {
         $dg->addAction(\Rubix\View\Components\Datagrid::ACTION_REMOVE, 'remove');
 
         // Define Routes
-        $dg->url['edit']['module'] = 'main';
-        $dg->url['edit']['controller'] = 'usuario';
-        $dg->url['remove']['module'] = 'main';
-        $dg->url['remove']['controller'] = 'usuario';
-        $dg->url['paginator']['module'] = 'main';
-        $dg->url['paginator']['controller'] = 'usuario';
+        $dg->url['edit'] = array('module' => 'main', 'controller' => 'usuario', 'action' => 'edit');
+        $dg->url['remove'] = array('module' => 'main', 'controller' => 'usuario', 'action' => 'remove');
+        $dg->url['paginator'] = array('module' => 'main', 'controller' => 'usuario');
 
         $this->view->setVariable('dg', $dg);
         return $this->view;
     }
 
     public static function dg_Perfil($val, $item) {
-        return $item->getStrNome();
+        return $item->getIntPerfil()->getStrNome();
     }
 
     public static function dg_DtUltimoAcesso($val, $item) {

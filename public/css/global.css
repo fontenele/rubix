@@ -7,6 +7,18 @@ body {
     color: #EEEEEE;
 }
 
+.rubix-color {
+    color: #ED9A25 !important;
+}
+
+.rubix-bgcolor {
+    background-color: #ED9A25 !important;
+}
+
+.rubix-border {
+    border: 1px solid #ED9A25 !important;
+}
+
 .table {
     color: #000000;
 }
@@ -63,6 +75,21 @@ body {
 
 .panel form {
     padding-top: 5px;
+    color: #333333;
+}
+
+.panel-datagrid > .panel-heading > .pull-right {
+    margin-bottom: 0;
+}
+
+.datagrid .datagrid-sorter {
+    vertical-align: baseline;
+    font-size: 10px;
+    padding-left: .2em;
+    cursor: pointer;
+}
+
+a > .datagrid-sorter {
     color: #333333;
 }
 

@@ -1,37 +1,37 @@
 <?php if ($this->pageCount): ?>
-        <ul class="pagination">
-            <!-- Previous page link -->
-            <?php if (isset($this->previous)): ?>
+    <ul class="pagination">
+        <!-- Previous page link -->
+        <?php if (isset($this->previous)): ?>
+            <li>
+                <a href="<?php echo $this->url(null, $this->route); ?>?page=<?php echo $this->previous; ?>">&laquo;</a>
+            </li>
+        <?php else: ?>
+            <li class="disabled">
+                <a href="#">&laquo;</a>
+            </li>
+        <?php endif; ?>
+        <!-- Numbered page links -->
+        <?php foreach ($this->pagesInRange as $page): ?>
+            <?php if ($page != $this->current): ?>
                 <li>
-                    <a href="<?php echo $this->url(null, $this->route); ?>?page=<?php echo $this->previous; ?>">&laquo;</a>
+                    <a class="rubix-color" href="<?php echo $this->url(null, $this->route); ?>?page=<?php echo $page; ?>"><?php echo $page; ?></a>
                 </li>
             <?php else: ?>
-                <li class="disabled">
-                    <a href="#">&laquo;</a>
+                <li class="active">
+                    <a class="rubix-bgcolor rubix-border" href="#"><?php echo $page; ?></a>
                 </li>
             <?php endif; ?>
-            <!-- Numbered page links -->
-            <?php foreach ($this->pagesInRange as $page): ?>
-                <?php if ($page != $this->current): ?>
-                    <li>
-                        <a href="<?php echo $this->url(null, $this->route); ?>?page=<?php echo $page; ?>"><?php echo $page; ?></a>
-                    </li>
-                <?php else: ?>
-                    <li class="active">
-                        <a href="#"><?php echo $page; ?></a>
-                    </li>
-                <?php endif; ?>
-            <?php endforeach; ?>
+        <?php endforeach; ?>
 
-            <!-- Next page link -->
-            <?php if (isset($this->next)): ?>
-                <li>
-                    <a href="<?php echo $this->url(null, $this->route); ?>?page=<?php echo $this->next; ?>">&raquo;</a>
-                </li>
-            <?php else: ?>
-                <li class="disabled">
-                    <a href="#">&raquo;</a>
-                </li>
-            <?php endif; ?>
-        </ul>
+        <!-- Next page link -->
+        <?php if (isset($this->next)): ?>
+            <li>
+                <a href="<?php echo $this->url(null, $this->route); ?>?page=<?php echo $this->next; ?>">&raquo;</a>
+            </li>
+        <?php else: ?>
+            <li class="disabled">
+                <a href="#">&raquo;</a>
+            </li>
+        <?php endif; ?>
+    </ul>
 <?php endif; ?>

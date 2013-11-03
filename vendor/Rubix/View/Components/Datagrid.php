@@ -50,6 +50,18 @@ class Datagrid {
      *
      * @var string
      */
+    public $title;
+
+    /**
+     *
+     * @var array
+     */
+    public $header = array();
+
+    /**
+     *
+     * @var string
+     */
     public $getIdMethodName;
 
     /**
@@ -60,6 +72,9 @@ class Datagrid {
 
     const ACTION_EDIT = 1;
     const ACTION_REMOVE = 2;
+
+    const HEADER_LINK = 1;
+    const HEADER_BUTTON = 2;
 
     /**
      *
@@ -113,12 +128,19 @@ class Datagrid {
     }
 
     public function setQueryBuilder(\Doctrine\ORM\QueryBuilder $queryBuilder) {
+        $request = new \Zend\Http\PhpEnvironment\Request();
+
+        $sortField = $request->getQuery('sortfield');
+        $sortOrder = $request->getQuery('sortorder');
+        if($sortField && $this->columns[$sortField]['aliasOrderBy']) {
+            $queryBuilder->orderBy($this->columns[$sortField]['aliasOrderBy'], $sortOrder == 'ASC' ? $sortOrder : 'DESC');
+        }
+
         $doctrinePaginator = new DoctrinePaginator($queryBuilder);
         $paginatorAdapter = new PaginatorAdapter($doctrinePaginator);
 
         $paginator = new Paginator($paginatorAdapter);
 
-        $request = new \Zend\Http\PhpEnvironment\Request();
         $paginator->setCurrentPageNumber($request->getQuery($this->getPageGetName()));
         $paginator->setItemCountPerPage($this->getItensPerPage());
 
@@ -155,6 +177,39 @@ class Datagrid {
         return $this;
     }
 
+    public function getTitle() {
+        return $this->title;
+    }
+
+    public function setTitle($title) {
+        $this->title = $title;
+        return $this;
+    }
+
+    public function getHeader() {
+        return $this->header;
+    }
+
+    public function addHeaderLink($label, $link = array()) {
+        $this->header[] = array(
+            'type' => self::HEADER_LINK,
+            'label' => $label,
+            'link' => $link,
+            'icon' => null
+        );
+        return $this;
+    }
+
+    public function addHeaderButton($label, $link = array(), $icon = null) {
+        $this->header[] = array(
+            'type' => self::HEADER_BUTTON,
+            'label' => $label,
+            'link' => $link,
+            'icon' => $icon
+        );
+        return $this;
+    }
+
     /**
      *
      * @param \Zend\ServiceManager\ServiceManager $sm
@@ -176,18 +231,21 @@ class Datagrid {
         return $this;
     }
 
-    public function addColumn($label, $entityAttr, $options = array(), $methodGet = null) {
+    public function addColumn($label, $entityAttr, $options = array(), $methodGet = null, $aliasOrderBy = null) {
         $this->columns[$entityAttr] = array(
             'label' => $label,
             'options' => $options,
-            'methodGet' => $methodGet
+            'methodGet' => $methodGet,
+            'aliasOrderBy' => $aliasOrderBy
         );
+        return $this;
     }
 
     public function addAction($type, $icon = null) {
         $this->actions[$type] = array(
             'icon' => $icon
         );
+        return $this;
     }
 
     /**
@@ -197,6 +255,12 @@ class Datagrid {
     public function __toString() {
         try {
             $renderer = $this->sm->get('Zend\View\Renderer\PhpRenderer');
+            $request = new \Zend\Http\PhpEnvironment\Request();
+
+            $this->getView()->setVariable('title', $this->getTitle());
+            $this->getView()->setVariable('header', $this->getHeader());
+            $this->getView()->setVariable('sortField', $request->getQuery('sortfield'));
+            $this->getView()->setVariable('sortOrder', $request->getQuery('sortorder') == 'ASC' ? 'DESC' : 'ASC');
             $this->getView()->setVariable('actions', $this->actions);
             $this->getView()->setVariable('columns', $this->columns);
             $this->getView()->setVariable('data', $this->getPaginator());
