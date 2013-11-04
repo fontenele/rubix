@@ -54,6 +54,18 @@ class Datagrid {
 
     /**
      *
+     * @var \Rubix\Mvc\Form
+     */
+    public $form;
+
+    /**
+     *
+     * @var array
+     */
+    public $filter = array();
+
+    /**
+     *
      * @var array
      */
     public $header = array();
@@ -130,12 +142,29 @@ class Datagrid {
     public function setQueryBuilder(\Doctrine\ORM\QueryBuilder $queryBuilder) {
         $request = new \Zend\Http\PhpEnvironment\Request();
 
-        $sortField = $request->getQuery('sortfield');
-        $sortOrder = $request->getQuery('sortorder');
+        $sortField = $request->getQuery('_sortfield');
+        $sortOrder = $request->getQuery('_sortorder');
+
         if($sortField && $this->columns[$sortField]['aliasOrderBy']) {
             $queryBuilder->orderBy($this->columns[$sortField]['aliasOrderBy'], $sortOrder == 'ASC' ? $sortOrder : 'DESC');
         }
 
+        /**
+         * @todo Testar vários wheres seguidos, pois está com problemas
+         */
+        $get = $request->getQuery()->toArray();
+        foreach($this->filter as $filter) {
+            if($filter['type'] != 'submit' && \key_exists($filter['name'], $get) && $get[$filter['name']]) {
+                $val = htmlentities($get[$filter['name']]);
+                if(\gettype($get[$filter['name']]) == 'integer') {
+                    $queryBuilder->andWhere("{$filter['alias']} = {$val}");
+                }else{
+                    $queryBuilder->andWhere("{$filter['alias']} = '{$val}'");
+                }
+            }
+        }
+
+        //xd($queryBuilder->getQuery()->getSQL());
         $doctrinePaginator = new DoctrinePaginator($queryBuilder);
         $paginatorAdapter = new PaginatorAdapter($doctrinePaginator);
 
@@ -188,6 +217,15 @@ class Datagrid {
 
     public function getHeader() {
         return $this->header;
+    }
+
+    public function getForm() {
+        return $this->form;
+    }
+
+    public function setForm(\Rubix\Mvc\Form $form) {
+        $this->form = $form;
+        return $this;
     }
 
     public function addHeaderLink($label, $link = array()) {
@@ -248,6 +286,38 @@ class Datagrid {
         return $this;
     }
 
+    public function addFilterField($name, $type = 'input', $alias = null, $label = null) {
+        $render = '';
+        $labelField = $name;
+        $class = 'col-lg-6';
+
+        switch($type) {
+            case 'input':
+                $render = 'formElement';
+            break;
+            case 'select':
+                $render = 'formSelect';
+            break;
+            case 'submit':
+                $render = 'formSubmit';
+                $labelField = '';
+                $class = 'col-lg-offset-2 col-lg-10';
+            break;
+        }
+
+        $this->filter[] = array(
+            'name' => $name,
+            'alias' => $alias,
+            'type' => $type,
+            'label' => $label,
+            'labelField' => $labelField,
+            'render' => $render,
+            'class' => $class
+        );
+
+        return $this;
+    }
+
     /**
      *
      * @return string
@@ -257,22 +327,29 @@ class Datagrid {
             $renderer = $this->sm->get('Zend\View\Renderer\PhpRenderer');
             $request = new \Zend\Http\PhpEnvironment\Request();
 
+            if($this->form) {
+                $this->getForm()->setData($request->getQuery());
+            }
+
             $this->getView()->setVariable('title', $this->getTitle());
             $this->getView()->setVariable('header', $this->getHeader());
-            $this->getView()->setVariable('sortField', $request->getQuery('sortfield'));
-            $this->getView()->setVariable('sortOrder', $request->getQuery('sortorder') == 'ASC' ? 'DESC' : 'ASC');
+            $this->getView()->setVariable('form', $this->getForm());
+            $this->getView()->setVariable('filter', $this->filter);
+            $this->getView()->setVariable('sortField', $request->getQuery('_sortfield'));
+            $this->getView()->setVariable('sortOrder', $request->getQuery('_sortorder') == 'ASC' ? 'DESC' : 'ASC');
             $this->getView()->setVariable('actions', $this->actions);
             $this->getView()->setVariable('columns', $this->columns);
             $this->getView()->setVariable('data', $this->getPaginator());
             $this->getView()->setVariable('url', $this->getUrl());
             $this->getView()->setVariable('getIdMethodName', $this->getGetIdMethodName());
-
+            $this->getView()->setVariable('request', $request);
             $helper = $this->sm->get('viewhelpermanager');
             $this->getView()->setVariable('this', $helper);
 
             return $renderer->render($this->getView());
         } catch (\Exception $exception) {
-            xd($exception->getMessage());
+            //throw $exception;
+            xd($exception->getMessage(), $exception->getCode());
             return '';
         }
     }

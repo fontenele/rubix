@@ -32,7 +32,8 @@ class UsuarioController extends Controller {
 
         // Datagrid
         $dg = new \Rubix\View\Components\Datagrid($this->getServiceLocator());
-        $dg->setTitle('Usuários');
+        $dg->setTitle('Usuários')->setForm($this->getForm('\Main\Form\UsuarioForm'));
+
 
         // Columns
         $dg->addColumn('ID', 'intCod', array('attributes' => array('width' => '5%', 'class' => 'text-center')), null, 'u.intCod')
@@ -40,8 +41,17 @@ class UsuarioController extends Controller {
                 ->addColumn('Nome', 'strNome', null, null, 'u.strNome')
                 ->addColumn('E-mail', 'strEmail', null, null, 'u.strEmail')
                 ->addColumn('Perfil', 'intPerfil', null, __CLASS__ . '::dg_Perfil', 'p.strNome')
-                ->addColumn('Últ. Acesso', 'datUltimoLogin', null, __CLASS__ . '::dg_DtUltimoAcesso', 'u.datUltimoLogin')
-                ->setQueryBuilder($usuarios);
+                ->addColumn('Últ. Acesso', 'datUltimoLogin', null, __CLASS__ . '::dg_DtUltimoAcesso', 'u.datUltimoLogin');
+
+        // Filters
+        $dg->addFilterField('strLogin', 'input', 'u.strLogin');
+        $dg->addFilterField('strNome', 'input', 'u.strNome');
+        $dg->addFilterField('intPerfil', 'select', 'u.intPerfil');
+        $dg->addFilterField('submit', 'submit');
+        $dg->getForm()->setAttribute('action', APPLICATION_URL . 'main/usuario/?' . $this->getRequest()->getQuery()->toString());
+        $dg->getForm()->setAttribute('method', 'get');
+        $dg->getForm()->get('submit')->setValue('Pesquisar');
+        $dg->setQueryBuilder($usuarios);
 
         // Header buttons
         $dg->addHeaderButton('Novo Usuário', array('module' => 'main', 'controller' => 'usuario', 'action' => 'add'), 'plus');

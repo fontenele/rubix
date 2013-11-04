@@ -27,6 +27,24 @@
         <?php endif; ?>
     </div>
 
+    <?php if($filter && $form): ?>
+        <?php $form->prepare(); ?>
+        <div class="panel-body">
+                <?php echo $this->form()->openTag($form); ?>
+                <input type="hidden" name="_sortfield" value="<?php echo $request->getQuery()->get('_sortfield') ?>" />
+                <input type="hidden" name="_sortorder" value="<?php echo $request->getQuery()->get('_sortorder') ?>" />
+                <?php foreach($filter as $field): ?>
+                    <div class="form-group">
+                        <?php echo $field['labelField'] ? $this->formLabel($form->get($field['labelField']), $field['label']) : ''; ?>
+                        <div class="<?php echo $field['class'] ?>">
+                            <?php echo $this->$field['render']($form->get($field['name'])); ?>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            <?php echo $this->form()->closeTag(); ?>
+        </div>
+    <?php endif; ?>
+
     <table class="table table-bordered table-condensed table-hover table-responsive table-striped datagrid">
         <thead>
             <tr>
@@ -42,7 +60,7 @@
                     <th <?php echo $attrs ?>>
                         <?php echo $col['label'] ?>
                         <?php if($col['aliasOrderBy']): ?>
-                            <a href="<?php echo $this->url(null, $url['paginator']); ?>?sortfield=<?php echo $name; ?>&sortorder=<?php echo $sortOrder; ?>">
+                            <a href="<?php echo $this->url(null, $url['paginator']); ?>?_sortfield=<?php echo $name; ?>&_sortorder=<?php echo $sortOrder; ?>">
                                 <span class="<?php echo $name == $sortField ? 'rubix-color' : '' ?> datagrid-sorter glyphicon glyphicon-sort"></span>
                             </a>
                         <?php endif; ?>
