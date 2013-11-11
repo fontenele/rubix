@@ -137,9 +137,8 @@ class IndexController extends Controller {
         $client->setUri('http://rubix:80' . $this->getRequest()->getBaseUrl() . '/api/u/get-list');
         $client->setAuth('fontenele', '123456');
         //$client->setMethod('POST');
-        //$client->setParameterPost(array('id' => 1,'name' => 'Guilherme Fontenele'));
-        $client->setMethod('GET');
-        //$client->setParameterGet(array('id' => 1,'name' => \Zend\Uri\Uri::encodePath('Guilherme Fontenele')));
+        $client->setMethod('POST');
+        //$client->setParameterPost(array('id' => 1,'name' => \Zend\Uri\Uri::encodePath('Guilherme Fontenele')));
 
         $response = $client->send();
 
@@ -154,7 +153,7 @@ class IndexController extends Controller {
 
         $body = urldecode($response->getBody());
         $obj = json_decode($body);
-        //xd($body, $obj);
+        xd($body, $obj);
 
         $response = $this->getResponse();
         $response->setContent($body);

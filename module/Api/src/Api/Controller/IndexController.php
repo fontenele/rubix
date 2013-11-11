@@ -35,12 +35,21 @@ class IndexController extends Restful {
                 $usuario->setDatUltimoLogin(new \DateTime());
                 $this->getEntityManager()->persist($usuario);
                 $this->getEntityManager()->flush();
-                $this->view->usuario = $usuario->getArrayCopy();
             } else {
                 throw new \Exception($this->translate('Usuário/Senha inválidos.'));
             }
 
-            //xd($_REQUEST, $_SERVER);
+            $qb = $this->getEntityManager()->createQueryBuilder()
+                ->select('u')
+                ->from('Main\Entity\Usuarios', 'u');
+
+            $usuarios = $qb->getQuery()->execute();
+            $return = array();
+            foreach($usuarios as $usuario) {
+                $return[] = $usuario->getArrayCopy();
+            }
+
+            $this->view->usuarios = $return;
 
             //$this->view->id = $id;
             //$this->view->name = $name;
