@@ -58,6 +58,10 @@ class UsuarioController extends Controller {
 
         // Row Actions
         $dg->setGetIdMethodName('getIntCod');
+
+        /**
+         * @todo Implement callback here \/
+         */
         $dg->addAction(\Rubix\View\Components\Datagrid::ACTION_EDIT, 'edit');
         $dg->addAction(\Rubix\View\Components\Datagrid::ACTION_REMOVE, 'remove');
 

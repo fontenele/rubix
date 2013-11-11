@@ -4,7 +4,7 @@ namespace Rubix\Mvc;
 
 use Zend\ServiceManager\ServiceManager;
 
-class Entity extends \ArrayObject {
+abstract class Entity extends \ArrayObject {
 
     protected $sm;
     protected $inputFilter;
@@ -21,7 +21,10 @@ class Entity extends \ArrayObject {
                 $method = sprintf(self::GETTER, ucfirst($attr->name));
                 $val = $this->$method();
                 if ($filter && is_object($val) && substr(get_class($val), 0, 31) == self::DOCTRINE_CLASS) {
-                    $val = '{' . str_replace(self::DOCTRINE_CLASS, '', get_class($val)) . '}';
+                    $_obj = new \stdClass();
+                    $_obj->id = $val->{$this->getId()}();
+                    $_obj->desc = $val->{$this->getDesc()}();
+                    $val = $_obj;
                 }
 
                 $copy[$attr->name] = $val;
@@ -47,6 +50,14 @@ class Entity extends \ArrayObject {
             throw new \Exception('ServiceManager not found. (' . get_class($this) . '::getEntityManager())');
         }
         return $this->sm->get('doctrine.entitymanager.orm_default');
+    }
+
+    public function getId() {
+        return $this->id;
+    }
+
+    public function getDesc() {
+        return $this->desc;
     }
 
 }

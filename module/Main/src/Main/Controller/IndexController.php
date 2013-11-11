@@ -88,6 +88,9 @@ class IndexController extends Controller {
         if ($authResult->isValid()) {
             // Save user
             $usuario = $authResult->getIdentity();
+            $usuario->setDatUltimoLogin(new \DateTime());
+            $this->getEntityManager()->persist($usuario);
+            $this->getEntityManager()->flush();
             $authService->getStorage()->write($usuario);
 
             // Save resources
@@ -131,12 +134,12 @@ class IndexController extends Controller {
 
         $client = new \Zend\Http\Client();
         $client->setAdapter('Zend\Http\Client\Adapter\Curl');
-        $client->setUri('http://rubix:80' . $this->getRequest()->getBaseUrl() . '/api/u/hello');
-
+        $client->setUri('http://rubix:80' . $this->getRequest()->getBaseUrl() . '/api/u/get-list');
+        $client->setAuth('fontenele', '123456');
         //$client->setMethod('POST');
         //$client->setParameterPost(array('id' => 1,'name' => 'Guilherme Fontenele'));
         $client->setMethod('GET');
-        $client->setParameterGet(array('id' => 1,'name' => 'Guilherme Fontenele'));
+        //$client->setParameterGet(array('id' => 1,'name' => \Zend\Uri\Uri::encodePath('Guilherme Fontenele')));
 
         $response = $client->send();
 
@@ -148,7 +151,10 @@ class IndexController extends Controller {
             $response->setContent($message);
             return $response;
         }
-        $body = $response->getBody();
+
+        $body = urldecode($response->getBody());
+        $obj = json_decode($body);
+        //xd($body, $obj);
 
         $response = $this->getResponse();
         $response->setContent($body);

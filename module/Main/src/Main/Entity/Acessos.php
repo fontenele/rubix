@@ -44,6 +44,9 @@ class Acessos extends Entity {
      */
     private $intPerfil;
 
+    protected $id = 'getIntCod';
+    protected $desc = 'getStrNomeAcesso';
+
     /**
      * Set intCod
      *
@@ -58,7 +61,7 @@ class Acessos extends Entity {
     /**
      * Get intCod
      *
-     * @return integer 
+     * @return integer
      */
     public function getIntCod() {
         return $this->intCod;
@@ -79,7 +82,7 @@ class Acessos extends Entity {
     /**
      * Get strNomeAcesso
      *
-     * @return string 
+     * @return string
      */
     public function getStrNomeAcesso() {
         return $this->strNomeAcesso;
@@ -100,7 +103,7 @@ class Acessos extends Entity {
     /**
      * Get intPerfil
      *
-     * @return \Main\Entity\Perfis 
+     * @return \Main\Entity\Perfis
      */
     public function getIntPerfil() {
         return $this->intPerfil;

@@ -41,6 +41,9 @@ class Perfis extends Entity {
      */
     private $intSituacao = '2';
 
+    protected $id = 'getIntCod';
+    protected $desc = 'getStrNome';
+
     /**
      * Set intCod
      *

@@ -127,7 +127,7 @@ abstract class Controller extends AbstractActionController {
             } else {
                 $roles = include APPLICATION_PATH . '/config/acl.config.php';
             }
-            
+
             $allResources = array();
 
             foreach ($roles as $perfil => $resources) {
@@ -277,12 +277,11 @@ abstract class Controller extends AbstractActionController {
      * @return \Zend\Session\SessionManager
      */
     protected function getSessionStorage() {
-        //xd(get_class( $this->getServiceLocator()->get('session') ));
         return $this->getServiceLocator()->get('session');
     }
 
     /**
-     *
+     * Translate strings
      * @param type $message
      * @param type $textDomain
      * @param type $locale
@@ -406,9 +405,9 @@ abstract class Controller extends AbstractActionController {
     public function getEntityManager() {
         return $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
     }
-    
+
     /**
-     * 
+     *
      * @param string $name
      * @return \Rubix\Mvc\Form
      */
@@ -416,9 +415,9 @@ abstract class Controller extends AbstractActionController {
         $form = new $name(null, $options, $this->getServiceLocator());
         return $form;
     }
-    
+
     /**
-     * 
+     *
      * @param string $name
      * @return \Rubix\Mvc\Entity
      */

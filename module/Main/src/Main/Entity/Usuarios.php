@@ -72,6 +72,9 @@ class Usuarios extends Entity {
      */
     private $intPerfil;
 
+    protected $id = 'getIntCod';
+    protected $desc = 'getStrNome';
+
     /**
      * Get intCod
      *

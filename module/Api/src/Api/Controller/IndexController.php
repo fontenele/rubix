@@ -10,14 +10,45 @@ class IndexController extends Restful {
 
     }
 
-    public function helloAction() {
-        $id = $this->getParam('id');
-        $name = $this->getParam('name');
+    public function getListAction() {
+        try {
+            $user = $this->auth['user'];
+            $pass = $this->auth['pass'];
+            $msgErro = array();
 
-        $this->view->id = $id;
-        $this->view->name = $name;
+            if (!$user) {
+                throw new \Exception($this->translate('Informe o nome do usuário.'));
+            }
+            if (!$pass) {
+                throw new \Exception($this->translate('Informe a senha.'));
+            }
 
-        return $this->view;
+            $authService = $this->getServiceLocator()->get('Zend\Authentication\AuthenticationService');
+            $adapter = $authService->getAdapter();
+            $adapter->setIdentityValue($user);
+            $adapter->setCredentialValue($pass);
+
+            $authResult = $authService->authenticate();
+
+            if ($authResult->isValid()) {
+                $usuario = $authResult->getIdentity();
+                $usuario->setDatUltimoLogin(new \DateTime());
+                $this->getEntityManager()->persist($usuario);
+                $this->getEntityManager()->flush();
+                $this->view->usuario = $usuario->getArrayCopy();
+            } else {
+                throw new \Exception($this->translate('Usuário/Senha inválidos.'));
+            }
+
+            //xd($_REQUEST, $_SERVER);
+
+            //$this->view->id = $id;
+            //$this->view->name = $name;
+
+            return $this->view;
+        } catch (\Exception $e) {
+            return $this->fault($e);
+        }
     }
 
 }

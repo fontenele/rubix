@@ -86,9 +86,17 @@ class Module implements AutoloaderProviderInterface, ServiceProviderInterface {
 
     public function onBootstrap(MvcEvent $e) {
         $app = $e->getApplication();
-
         $eventManager = $app->getEventManager();
         $serviceManager = $app->getServiceManager();
+        $config = $serviceManager->get('config');
+        if (isset($config['phpSettings'])) {
+            $phpSettings = $config['phpSettings'];
+            if ($phpSettings) {
+                foreach ($phpSettings as $key => $value) {
+                    ini_set($key, $value);
+                }
+            }
+        }
 
         $moduleRouteListener = new ModuleRouteListener();
 
@@ -98,47 +106,47 @@ class Module implements AutoloaderProviderInterface, ServiceProviderInterface {
         $eventManager->attach(\Zend\Mvc\MvcEvent::EVENT_DISPATCH_ERROR, array($this, 'handleError'), 1);
 
         $eventManager->attach(
-                MvcEvent::EVENT_DISPATCH, function($e) use ($serviceManager, $eventManager) {
-            $routeMatch = $e->getRouteMatch();
-            $viewModel = $e->getViewModel();
-            $controller = $e->getController();
+            MvcEvent::EVENT_DISPATCH, function($e) use ($serviceManager, $eventManager) {
+                $routeMatch = $e->getRouteMatch();
+                $viewModel = $e->getViewModel();
+                $controller = $e->getController();
 
-            $boExisteModulo = in_array(strtolower($routeMatch->getParam('module')), array_map(function($item) {
-                        return strtolower($item);
-                    }, $this->application['modules']));
+                $boExisteModulo = in_array(strtolower($routeMatch->getParam('module')), array_map(function($item) {
+                            return strtolower($item);
+                        }, $this->application['modules']));
 
-            if (!$boExisteModulo) {
-                $e->setError(\Zend\Mvc\Application::ERROR_ROUTER_NO_MATCH);
-                $this->handleError($e);
-                die;
-            }
-
-            $controllersConfig = $this->getControllerConfig();
-            $controllers = $controllersConfig['invokables'];
-            $filterCamel = new \Zend\Filter\Word\DashToCamelCase;
-            $action = lcfirst($filterCamel->filter($routeMatch->getParam('action'))) . 'Action';
-
-            switch (true) {
-                case!key_exists($routeMatch->getParam('controller'), $controllers):
-                case!class_exists($controllers[$routeMatch->getParam('controller')]):
-                    $e->setError(\Zend\Mvc\Application::ERROR_CONTROLLER_NOT_FOUND);
-                    $this->handleError($e);
-                    break;
-                case $routeMatch->getParam('action') == 'not-found':
-                case!method_exists($controllers[$routeMatch->getParam('controller')], $action):
+                if (!$boExisteModulo) {
                     $e->setError(\Zend\Mvc\Application::ERROR_ROUTER_NO_MATCH);
                     $this->handleError($e);
-                    break;
-            }
+                    die;
+                }
 
-            if ($viewModel instanceof \Zend\View\Model\JsonModel) {
+                $controllersConfig = $this->getControllerConfig();
+                $controllers = $controllersConfig['invokables'];
+                $filterCamel = new \Zend\Filter\Word\DashToCamelCase;
+                $action = lcfirst($filterCamel->filter($routeMatch->getParam('action'))) . 'Action';
 
-            } elseif ($viewModel instanceof \Zend\View\Model\ViewModel) {
-                $viewModel->setVariable('module', $routeMatch->getParam('module'));
-                $viewModel->setVariable('controller', $routeMatch->getParam('controller'));
-                $viewModel->setVariable('action', $routeMatch->getParam('action'));
-            }
-        }, -100
+                switch (true) {
+                    case!key_exists($routeMatch->getParam('controller'), $controllers):
+                    case!class_exists($controllers[$routeMatch->getParam('controller')]):
+                        $e->setError(\Zend\Mvc\Application::ERROR_CONTROLLER_NOT_FOUND);
+                        $this->handleError($e);
+                        break;
+                    case $routeMatch->getParam('action') == 'not-found':
+                    case!method_exists($controllers[$routeMatch->getParam('controller')], $action):
+                        $e->setError(\Zend\Mvc\Application::ERROR_ROUTER_NO_MATCH);
+                        $this->handleError($e);
+                        break;
+                }
+
+                if ($viewModel instanceof \Zend\View\Model\JsonModel) {
+
+                } elseif ($viewModel instanceof \Zend\View\Model\ViewModel) {
+                    $viewModel->setVariable('module', $routeMatch->getParam('module'));
+                    $viewModel->setVariable('controller', $routeMatch->getParam('controller'));
+                    $viewModel->setVariable('action', $routeMatch->getParam('action'));
+                }
+            }, -100
         );
 
         $eventManager->attach(

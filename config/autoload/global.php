@@ -30,4 +30,11 @@ return array(
             ),
         ),
     ),
+    'phpSettings'   => array(
+        'mbstring.internal_encoding'    => 'UTF-8',
+        'date.timezone'                 => 'America/Sao_Paulo',
+        'display_startup_errors'        => true,
+        'display_errors'                => true,
+        'max_execution_time'            => 600,
+    ),
 );
