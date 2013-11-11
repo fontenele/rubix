@@ -66,10 +66,10 @@ class IndexController extends Controller {
         $msgErro = array();
 
         if (!$user) {
-            $msgErro[] = 'Informe o nome do usuário.';
+            $msgErro[] = $this->translate('Informe o nome do usuário.');
         }
         if (!$pass) {
-            $msgErro[] = 'Informe a senha.';
+            $msgErro[] = $this->translate('Informe a senha.');
         }
 
         if (count($msgErro)) {
@@ -94,7 +94,7 @@ class IndexController extends Controller {
             $acessos = array();
             $acessosBanco = $this->getEntityManager()->getRepository('\Main\Entity\Acessos')->findBy(array('intPerfil' => $usuario->getIntPerfil()->getIntCod()));
 
-            foreach($acessosBanco as $acesso) {
+            foreach ($acessosBanco as $acesso) {
                 $acessos[] = $acesso->getStrNomeAcesso();
             }
 
@@ -104,10 +104,10 @@ class IndexController extends Controller {
             $sessionAcl = new \Zend\Session\Container('acl');
             $sessionAcl->offsetSet('roles', $roles);
 
-            $this->flashMessenger()->addSuccessMessage(array('message' => 'Bem vindo!', 'timeout' => 5000));
+            $this->flashMessenger()->addSuccessMessage(array('message' => $this->translate('Bem vindo!'), 'timeout' => 5000));
             return $this->redirect()->toUrl(APPLICATION_URL);
         } else {
-            $this->flashMessenger()->addErrorMessage(array('message' => 'Usuário/Senha inválidos.'));
+            $this->flashMessenger()->addErrorMessage(array('message' => $this->translate('Usuário/Senha inválidos.')));
         }
 
         return $this->indexAction();
@@ -121,9 +121,40 @@ class IndexController extends Controller {
         $auth = $this->getAuthService();
         $auth->clearIdentity();
 
-        $this->flashMessenger()->addSuccessMessage(array('message' => 'Até logo!', 'timeout' => 5000));
+        $this->flashMessenger()->addSuccessMessage(array('message' => $this->translate('Até logo!'), 'timeout' => 5000));
 
         return $this->indexAction();
+    }
+
+    public function restAction() {
+        $method = $this->params()->fromQuery('method', 'get');
+
+        $client = new \Zend\Http\Client();
+        $client->setAdapter('Zend\Http\Client\Adapter\Curl');
+        $client->setUri('http://rubix:80' . $this->getRequest()->getBaseUrl() . '/api/u/hello');
+
+        //$client->setMethod('POST');
+        //$client->setParameterPost(array('id' => 1,'name' => 'Guilherme Fontenele'));
+        $client->setMethod('GET');
+        $client->setParameterGet(array('id' => 1,'name' => 'Guilherme Fontenele'));
+
+        $response = $client->send();
+
+        if (!$response->isSuccess()) {
+            // report failure
+            $message = $response->getStatusCode() . ': ' . $response->getReasonPhrase();
+
+            $response = $this->getResponse();
+            $response->setContent($message);
+            return $response;
+        }
+        $body = $response->getBody();
+
+        $response = $this->getResponse();
+        $response->setContent($body);
+
+        return $response;
+
     }
 
 }

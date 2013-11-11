@@ -16,6 +16,7 @@ return array(
         'DoctrineModule',
         'DoctrineORMModule',
         'Rubix',
+        'Api',
         'Services',
         'Test',
     ),

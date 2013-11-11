@@ -101,6 +101,7 @@ class Module implements AutoloaderProviderInterface, ServiceProviderInterface {
                 MvcEvent::EVENT_DISPATCH, function($e) use ($serviceManager, $eventManager) {
             $routeMatch = $e->getRouteMatch();
             $viewModel = $e->getViewModel();
+            $controller = $e->getController();
 
             $boExisteModulo = in_array(strtolower($routeMatch->getParam('module')), array_map(function($item) {
                         return strtolower($item);
@@ -130,9 +131,13 @@ class Module implements AutoloaderProviderInterface, ServiceProviderInterface {
                     break;
             }
 
-            $viewModel->setVariable('module', $routeMatch->getParam('module'));
-            $viewModel->setVariable('controller', $routeMatch->getParam('controller'));
-            $viewModel->setVariable('action', $routeMatch->getParam('action'));
+            if ($viewModel instanceof \Zend\View\Model\JsonModel) {
+
+            } elseif ($viewModel instanceof \Zend\View\Model\ViewModel) {
+                $viewModel->setVariable('module', $routeMatch->getParam('module'));
+                $viewModel->setVariable('controller', $routeMatch->getParam('controller'));
+                $viewModel->setVariable('action', $routeMatch->getParam('action'));
+            }
         }, -100
         );
 
