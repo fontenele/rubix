@@ -41,6 +41,11 @@ class Perfis extends Entity {
      */
     private $intSituacao = '2';
 
+    /**
+     * @var array
+     */
+    private $colAcessos = array();
+
     protected $id = 'getIntCod';
     protected $desc = 'getStrNome';
 
@@ -102,6 +107,24 @@ class Perfis extends Entity {
      */
     public function getIntSituacao() {
         return $this->intSituacao;
+    }
+
+    /**
+     * Get Acessos collection
+     * @return array
+     */
+    public function getColAcessos() {
+        return $this->colAcessos;
+    }
+
+    /**
+     * Set Acessos collection
+     * @param array $colAcessos
+     * @return \Main\Entity\Perfis
+     */
+    public function setColAcessos($colAcessos) {
+        $this->colAcessos = $colAcessos;
+        return $this;
     }
 
     public function exchangeArray($data) {

@@ -10,16 +10,19 @@
                     <th>Módulo</th>
                     <th>Controller</th>
                     <th>Action</th>
+                    <th>Info</th>
                     <th width="5%">Acões</th>
                 </tr>
             </thead>
             <tbody>
                 <?php foreach ($resources as $resource): ?>
                     <?php $route = explode('|', $resource) ?>
+                    <?php $boComment = key_exists($resource, $comments) ?>
                     <tr>
                         <td><?php echo $route[0] ?></td>
                         <td><?php echo $route[1] ?></td>
                         <td><?php echo $route[2] ?></td>
+                        <td><em class="text-muted"><?php echo $boComment ? $comments[$resource] : '' ?></em></td>
                         <td>
                             <label>
                                 <input name="<?php echo $resource ?>" type="checkbox" <?php echo in_array($resource, $acessos) ? 'checked="checked"' : '' ?> />
@@ -30,7 +33,7 @@
             </tbody>
             <tfoot>
                 <tr>
-                    <td colspan="4" class="text-right">
+                    <td colspan="5" class="text-right">
                         <button type="submit" class="btn btn-primary">Salvar</button>
                     </td>
                 </tr>

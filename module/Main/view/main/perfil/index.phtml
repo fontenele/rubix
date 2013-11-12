@@ -20,7 +20,7 @@
                 <?php foreach ($datagrid as $perfil): ?>
                     <tr>
                         <td class="text-center"><?php echo $perfil->getIntCod() ?></td>
-                        <td><?php echo $perfil->getStrNome() ?></td>
+                        <td><?php echo $perfil->getStrNome() ?><span class="badge pull-right"><?php echo count($perfil->getColAcessos()) ?></span></td>
                         <td class="text-center">
                             <a href="<?php echo $this->url(null, array('module' => 'main', 'controller' => 'perfil', 'action' => 'resources', 'id' => $perfil->getIntCod())) ?>"><span class="icon-link glyphicon glyphicon-new-window"></span></a>
                         </td>

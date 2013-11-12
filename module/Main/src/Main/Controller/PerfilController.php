@@ -22,7 +22,7 @@ class PerfilController extends Controller {
         $this->setViewMessages();
 
         $perfis = $this->getEntityManager()->createQueryBuilder()->select('p')->from('Main\Entity\Perfis', 'p');
-
+        
         $doctrinePaginator = new DoctrinePaginator($perfis);
         $paginatorAdapter = new PaginatorAdapter($doctrinePaginator);
 
@@ -30,6 +30,17 @@ class PerfilController extends Controller {
 
         $paginator->setCurrentPageNumber($this->request->getQuery('page'));
         $paginator->setItemCountPerPage(5);
+
+        foreach($paginator as $perfil) {
+            $acessos = $this->getEntityManager()->createQueryBuilder()
+                    ->select('a')
+                    ->from('Main\Entity\Acessos', 'a')
+                    ->innerJoin('a.intPerfil', 'p')
+                    ->where('p.intCod = ' . $perfil->id())
+                    ->getQuery()
+                    ->getArrayResult();
+            $perfil->setColAcessos($acessos);
+        }
 
         $this->view->setVariable('datagrid', $paginator);
         return $this->view;

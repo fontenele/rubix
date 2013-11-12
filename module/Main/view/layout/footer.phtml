@@ -1,6 +1,7 @@
 <nav id="layout-footer" class="navbar navbar-inverse navbar-fixed-bottom" role="navigation">
     <?php if($this->identity()): ?>
-        <p class="navbar-text">Nome: <?php echo $this->identity()->getStrNome() ?></p>
+        <p class="navbar-text"><strong>Nome:</strong> <?php echo $this->identity()->getStrNome() ?></p>
+        <p class="navbar-text"><strong>Perfil:</strong> <?php echo $this->identity()->getIntPerfil()->getStrNome() ?></p>
     <?php endif; ?>
     <p class="navbar-text pull-right">Github: <a href="https://github.com/fontenele/rubix" target="_blank" class="navbar-link">Rubix</a></p>
 </nav>

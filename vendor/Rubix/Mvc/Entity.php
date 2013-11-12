@@ -22,8 +22,8 @@ abstract class Entity extends \ArrayObject {
                 $val = $this->$method();
                 if ($filter && is_object($val) && substr(get_class($val), 0, 31) == self::DOCTRINE_CLASS) {
                     $_obj = new \stdClass();
-                    $_obj->id = $val->{$this->getId()}();
-                    $_obj->desc = $val->{$this->getDesc()}();
+                    $_obj->id = $val->id();
+                    $_obj->desc = $val->desc();
                     $val = $_obj;
                 }
 
@@ -52,12 +52,12 @@ abstract class Entity extends \ArrayObject {
         return $this->sm->get('doctrine.entitymanager.orm_default');
     }
 
-    public function getId() {
-        return $this->id;
+    public function id() {
+        return $this->{$this->id}();
     }
 
-    public function getDesc() {
-        return $this->desc;
+    public function desc() {
+        return $this->{$this->desc}();
     }
 
 }
