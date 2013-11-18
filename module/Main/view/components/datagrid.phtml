@@ -1,5 +1,4 @@
 <div class="panel panel-default panel-datagrid">
-
     <div class="panel-heading">
         <?php echo $title ?>
         <?php if(count($header)): ?>
@@ -46,9 +45,9 @@
     <?php endif; ?>
 
     <table class="table table-bordered table-condensed table-hover table-responsive table-striped datagrid">
+        <?php if(count($data)): ?>
         <thead>
             <tr>
-
                 <?php foreach ($columns as $name => $col): ?>
                     <?php $attrs = ''; ?>
                     <?php if(isset($col['options']) && isset($col['options']['attributes'])): ?>
@@ -56,66 +55,52 @@
                             <?php $attrs.= "{$attr}=\"{$val}\" "; ?>
                         <?php endforeach; ?>
                     <?php endif; ?>
-
                     <th <?php echo $attrs ?>>
                         <?php echo $col['label'] ?>
                         <?php if($col['aliasOrderBy']): ?>
-                            <a href="<?php echo $this->url(null, $url['paginator']); ?>?_sortfield=<?php echo $name; ?>&_sortorder=<?php echo $sortOrder; ?>">
+                            <?php $_tmp = $queryParams ?>
+                            <?php $_tmp['_sortfield'] = $name ?>
+                            <?php $_tmp['_sortorder'] = $sortOrder ?>
+                            <a href="<?php echo $this->url(null, $url['paginator']); ?>?<?php echo http_build_query($_tmp); ?>">
                                 <span class="<?php echo $name == $sortField ? 'rubix-color' : '' ?> datagrid-sorter glyphicon glyphicon-sort"></span>
                             </a>
                         <?php endif; ?>
                     </th>
-
                 <?php endforeach; ?>
-
                 <?php if(count($actions)): ?>
                     <th width="5%">Ações</th>
                 <?php endif; ?>
-
             </tr>
         </thead>
         <tbody>
-            <?php if(count($data)): ?>
-                <?php foreach ($data as $row): ?>
-                    <tr>
-                        <?php foreach ($columns as $col => $config): ?>
-
-                            <?php $attrs = ''; ?>
-
-                            <?php if(isset($config['options']) && isset($config['options']['attributes'])): ?>
-                                <?php foreach($config['options']['attributes'] as $attr => $attrVal): ?>
-
-                                    <?php $attrs.= "{$attr}=\"{$attrVal}\" "; ?>
-
-                                <?php endforeach; ?>
-                            <?php endif; ?>
-                            <?php $methodGet = "get" . ucfirst($col); ?>
-                            <?php $val = $row->$methodGet(); ?>
-
-                            <td <?php echo $attrs ?>><?php echo $config['methodGet'] ? call_user_func($config['methodGet'], $val, $row) : $val ?></td>
-
-                        <?php endforeach; ?>
-
-                        <?php if(count($actions)): ?>
-                            <td class="text-center">
-                                <?php foreach($actions as $type => $action): ?>
-                                    <?php $urlAction = array() ?>
-                                    <?php if($type == \Rubix\View\Components\Datagrid::ACTION_EDIT) { $urlAction = $url['edit']; } ?>
-                                    <?php if($type == \Rubix\View\Components\Datagrid::ACTION_REMOVE) { $urlAction = $url['remove']; } ?>
-                                    <?php $urlAction['id'] = $row->$getIdMethodName(); ?>
-
-                                    <a class="rubix-color" href="<?php echo $this->url(null, $urlAction) ?>"><span class="glyphicon glyphicon-<?php echo $action['icon'] ?>"></span></a>
-
-                                <?php endforeach; ?>
-                            </td>
-                        <?php endif; ?>
-                    </tr>
-                <?php endforeach; ?>
-            <?php else: ?>
+            <?php foreach ($data as $row): ?>
                 <tr>
-                    <td colspan="<?php echo count($columns) + count($actions) ?>"><?php echo $this->translator('Nenhum resultado encontrado.') ?></td>
+                    <?php foreach ($columns as $col => $config): ?>
+                        <?php $attrs = ''; ?>
+                        <?php if(isset($config['options']) && isset($config['options']['attributes'])): ?>
+                            <?php foreach($config['options']['attributes'] as $attr => $attrVal): ?>
+
+                                <?php $attrs.= "{$attr}=\"{$attrVal}\" "; ?>
+
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                        <?php $methodGet = "get" . ucfirst($col); ?>
+                        <?php $val = $row->$methodGet(); ?>
+                        <td <?php echo $attrs ?>><?php echo $config['methodGet'] ? call_user_func($config['methodGet'], $val, $row) : $val ?></td>
+                    <?php endforeach; ?>
+                    <?php if(count($actions)): ?>
+                        <td class="text-center">
+                            <?php foreach($actions as $type => $action): ?>
+                                <?php $urlAction = array() ?>
+                                <?php if($type == \Rubix\View\Components\Datagrid::ACTION_EDIT) { $urlAction = $url['edit']; } ?>
+                                <?php if($type == \Rubix\View\Components\Datagrid::ACTION_REMOVE) { $urlAction = $url['remove']; } ?>
+                                <?php $urlAction['id'] = $row->$getIdMethodName(); ?>
+                                <a class="rubix-color" href="<?php echo $this->url(null, $urlAction) ?>"><span class="glyphicon glyphicon-<?php echo $action['icon'] ?>"></span></a>
+                            <?php endforeach; ?>
+                        </td>
+                    <?php endif; ?>
                 </tr>
-            <?php endif; ?>
+            <?php endforeach; ?>
         </tbody>
         <tfoot>
             <tr>
@@ -124,6 +109,12 @@
                 </td>
             </tr>
         </tfoot>
+        <?php else: ?>
+            <tbody>
+                <tr>
+                    <td><?php echo $this->translate('Nenhum resultado encontrado.') ?></td>
+                </tr>
+            </tbody>
+        <?php endif; ?>
     </table>
-
 </div>

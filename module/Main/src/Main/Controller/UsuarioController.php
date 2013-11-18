@@ -24,16 +24,18 @@ class UsuarioController extends Controller {
         // Set View Error/Success messages
         $this->setViewMessages();
 
-        // Generate Query Builder
-        $usuarios = $this->getEntityManager()->createQueryBuilder()
-                ->select('u')
-                ->from('Main\Entity\Usuarios', 'u')
-                ->innerJoin('u.intPerfil', 'p');
+        $dg = $this->createDatagrid();
 
+        $this->view->setVariable('dg', $dg);
+        return $this->view;
+    }
+
+    protected function createDatagrid() {
         // Datagrid
         $dg = new \Rubix\View\Components\Datagrid($this->getServiceLocator());
-        $dg->setTitle('Usuários')->setForm($this->getForm('\Main\Form\UsuarioForm'));
-
+        //$dg->debug = true;
+        $dg->setTitle('Usuários')
+                ->setForm($this->getForm('\Main\Form\UsuarioForm'));
 
         // Columns
         $dg->addColumn('ID', 'intCod', array('attributes' => array('width' => '5%', 'class' => 'text-center')), null, 'u.intCod')
@@ -44,20 +46,25 @@ class UsuarioController extends Controller {
                 ->addColumn('Últ. Acesso', 'datUltimoLogin', null, __CLASS__ . '::dg_DtUltimoAcesso', 'u.datUltimoLogin');
 
         // Filters
-        $dg->addFilterField('strLogin', 'input', 'u.strLogin');
-        $dg->addFilterField('strNome', 'input', 'u.strNome');
-        $dg->addFilterField('intPerfil', 'select', 'u.intPerfil');
-        $dg->addFilterField('submit', 'submit');
+        $dg->addFilterField('strLogin', 'LIKE', "'%%%s%%'", 'input', 'u.strLogin')
+                ->addFilterField('strNome', 'LIKE', "'%%%s%%'",  'input', 'u.strNome')
+                ->addFilterField('intPerfil', '=', '%s',  'select', 'u.intPerfil')
+                ->addFilterField('submit', '', '', 'submit');
+
+        // Define Form method and action
         $dg->getForm()->setAttribute('action', APPLICATION_URL . 'main/usuario/?' . $this->getRequest()->getQuery()->toString());
         $dg->getForm()->setAttribute('method', 'get');
         $dg->getForm()->get('submit')->setValue('Pesquisar');
+
+        // Generate Query Builder
+        $usuarios = $this->getEntityManager()->createQueryBuilder()
+                ->select('u')
+                ->from('Main\Entity\Usuarios', 'u')
+                ->innerJoin('u.intPerfil', 'p');
         $dg->setQueryBuilder($usuarios);
 
         // Header buttons
         $dg->addHeaderButton('Novo Usuário', array('module' => 'main', 'controller' => 'usuario', 'action' => 'add'), 'plus');
-
-        // Row Actions
-        $dg->setGetIdMethodName('getIntCod');
 
         /**
          * @todo Implement callback here \/
@@ -70,8 +77,7 @@ class UsuarioController extends Controller {
         $dg->url['remove'] = array('module' => 'main', 'controller' => 'usuario', 'action' => 'remove');
         $dg->url['paginator'] = array('module' => 'main', 'controller' => 'usuario');
 
-        $this->view->setVariable('dg', $dg);
-        return $this->view;
+        return $dg;
     }
 
     public static function dg_Perfil($val, $item) {

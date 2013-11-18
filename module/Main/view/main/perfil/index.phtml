@@ -6,21 +6,21 @@
         </p>
     </div>
     <table class="table">
-        <thead>
-            <tr>
-                <th width="5%" class="text-center">ID</th>
-                <th width="60%">Nome</th>
-                <th class="text-center" width="10%">Acessos</th>
-                <th class="text-center" width="10%">Situação</th>
-                <th class="text-center" width="5%">Ações</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php if (count($datagrid)) : ?>
+        <?php if (count($datagrid)) : ?>
+            <thead>
+                <tr>
+                    <th width="5%" class="text-center">ID</th>
+                    <th width="60%">Nome</th>
+                    <th class="text-center" width="10%">Acessos</th>
+                    <th class="text-center" width="10%">Situação</th>
+                    <th class="text-center" width="5%">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
                 <?php foreach ($datagrid as $perfil): ?>
                     <tr>
                         <td class="text-center"><?php echo $perfil->getIntCod() ?></td>
-                        <td><?php echo $perfil->getStrNome() ?><span class="badge pull-right"><?php echo count($perfil->getColAcessos()) ?></span></td>
+                        <td><?php echo $perfil->getStrNome() ?><span class="badge pull-right" data-placement="top" data-toggle="tooltip" title="Acessos ativos"><?php echo count($perfil->getColAcessos()) ?></span></td>
                         <td class="text-center">
                             <a href="<?php echo $this->url(null, array('module' => 'main', 'controller' => 'perfil', 'action' => 'resources', 'id' => $perfil->getIntCod())) ?>"><span class="icon-link glyphicon glyphicon-new-window"></span></a>
                         </td>
@@ -33,18 +33,20 @@
                         </td>
                     </tr>
                 <?php endforeach; ?>
-            <?php else: ?>
+            </tbody>
+            <tfoot>
                 <tr>
-                    <td colspan="5">Nenhum resultado encontrado.</td>
+                    <td colspan="5" class="text-center">
+                        <?php echo $this->paginationControl($datagrid, 'sliding', array('components/paginator.phtml', 'Perfis'), array('route' => array('module' => 'main', 'controller' => 'perfil'))) ?>
+                    </td>
                 </tr>
-            <?php endif; ?>
-        </tbody>
-        <tfoot>
-            <tr>
-                <td colspan="5" class="text-center">
-                    <?php echo $this->paginationControl($datagrid, 'sliding', array('components/paginator.phtml', 'Perfis'), array('route' => array('module' => 'main', 'controller' => 'perfil'))) ?>
-                </td>
-            </tr>
-        </tfoot>
+            </tfoot>
+        <?php else: ?>
+            <tbody>
+                <tr>
+                    <td colspan="5"><?php echo $this->translate('Nenhum resultado encontrado.') ?></td>
+                </tr>
+            </tbody>
+        <?php endif; ?>
     </table>
 </div>
