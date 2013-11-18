@@ -3,10 +3,12 @@
 namespace Main\Controller;
 
 use Rubix\Mvc\Controller;
-use Zend\Paginator\Paginator;
-use Doctrine\ORM\Tools\Pagination\Paginator as DoctrinePaginator;
-use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator as PaginatorAdapter;
 
+/**
+ * Usuario Controller
+ * @package Main\Controller
+ * @name UsuarioController
+ */
 class UsuarioController extends Controller {
 
     /**
@@ -17,7 +19,7 @@ class UsuarioController extends Controller {
     }
 
     /**
-     * Primary action
+     * List items action
      * @return \Zend\View\Model\ViewModel
      */
     public function indexAction() {
@@ -30,6 +32,10 @@ class UsuarioController extends Controller {
         return $this->view;
     }
 
+    /**
+     * Create DataGrid
+     * @return \Rubix\View\Components\Datagrid
+     */
     protected function createDatagrid() {
         // Datagrid
         $dg = new \Rubix\View\Components\Datagrid($this->getServiceLocator());
@@ -66,9 +72,7 @@ class UsuarioController extends Controller {
         // Header buttons
         $dg->addHeaderButton('Novo Usuário', array('module' => 'main', 'controller' => 'usuario', 'action' => 'add'), 'plus');
 
-        /**
-         * @todo Implement callback here \/
-         */
+        // Actions column
         $dg->addAction(\Rubix\View\Components\Datagrid::ACTION_EDIT, 'edit');
         $dg->addAction(\Rubix\View\Components\Datagrid::ACTION_REMOVE, 'remove');
 
@@ -80,14 +84,30 @@ class UsuarioController extends Controller {
         return $dg;
     }
 
+    /**
+     * DataGrid - Column render callback
+     * @param string $val
+     * @param mixed $item
+     * @return string
+     */
     public static function dg_Perfil($val, $item) {
         return $item->getIntPerfil()->getStrNome();
     }
 
+    /**
+     * DataGrid - Column render callback
+     * @param string $val
+     * @param mixed $item
+     * @return string
+     */
     public static function dg_DtUltimoAcesso($val, $item) {
         return $val->format('d/m/Y H:i:s');
     }
 
+    /**
+     * Create new item action
+     * @return \Zend\View\Model\ViewModel
+     */
     public function addAction() {
         $this->setViewMessages();
         $form = $this->getForm('\Main\Form\UsuarioForm');
@@ -117,6 +137,10 @@ class UsuarioController extends Controller {
         return $this->view;
     }
 
+    /**
+     * Edit item action
+     * @return \Zend\View\Model\ViewModel
+     */
     public function editAction() {
         $this->setViewMessages();
         $id = $this->getParam('id') ? (int) $this->getParam('id') : null;
@@ -154,6 +178,10 @@ class UsuarioController extends Controller {
         return $this->view;
     }
 
+    /**
+     * Delete item action
+     * @return \Zend\Mvc\Controller\Plugin\Redirect
+     */
     public function removeAction() {
         $id = $this->getParam('id') ? (int) $this->getParam('id') : null;
 
