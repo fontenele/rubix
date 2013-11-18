@@ -53,6 +53,20 @@ Global = {
     }
 };
 
+DataGrid = {
+    confirmarExclusaoCallback: function(botao) {
+        window.location.href = $(botao).parent().parent().parent().prev().data('href');
+    },
+    cancelarExclusaoCallback: function(botao) {
+        $(botao).parent().parent().parent().prev().popover('hide');
+    }
+};
+
 $(document).ready(function() {
     Global.init();
+    $('.item-delete').popover();
+    $('.btn-cancelar-delete').on('click', function() {
+        alert('5');
+        return false;
+    });
 });

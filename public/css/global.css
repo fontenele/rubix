@@ -7,6 +7,14 @@ body {
     color: #EEEEEE;
 }
 
+a {
+    cursor: pointer;
+}
+
+.popover {
+    color: #333333;
+}
+
 .rubix-color {
     color: #ED9A25 !important;
 }

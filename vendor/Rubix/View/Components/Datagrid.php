@@ -426,9 +426,19 @@ class Datagrid {
      * @param string $icon
      * @return \Rubix\View\Components\Datagrid
      */
-    public function addAction($type, $icon = null) {
+    public function addAction($type, $icon = null, $jsCallback = null, $cssClass = null) {
+        switch(true) {
+            case $type == self::ACTION_REMOVE:
+                $cssClass = 'item-delete';
+                break;
+            case $type == self::ACTION_EDIT:
+                $cssClass = 'item-edit';
+                break;
+        }
         $this->actions[$type] = array(
-            'icon' => $icon
+            'icon' => $icon,
+            'jsCallback' => $jsCallback,
+            'cssClass' => $cssClass
         );
         return $this;
     }

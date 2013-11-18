@@ -95,7 +95,14 @@
                                 <?php if($type == \Rubix\View\Components\Datagrid::ACTION_EDIT) { $urlAction = $url['edit']; } ?>
                                 <?php if($type == \Rubix\View\Components\Datagrid::ACTION_REMOVE) { $urlAction = $url['remove']; } ?>
                                 <?php $urlAction['id'] = $row->$getIdMethodName(); ?>
-                                <a class="rubix-color" href="<?php echo $this->url(null, $urlAction) ?>"><span class="glyphicon glyphicon-<?php echo $action['icon'] ?>"></span></a>
+
+                                <?php if($action['jsCallback']): ?>
+                                    <a class="rubix-color <?php echo $action['cssClass'] ?>" onclick="<?php echo "{$action['jsCallback']}(this)" ?>" data-id="<?php echo $row->$getIdMethodName() ?>" data-href="<?php echo $this->url(null, $urlAction) ?>"><span class="glyphicon glyphicon-<?php echo $action['icon'] ?>"></span></a>
+                                <?php elseif($type == \Rubix\View\Components\Datagrid::ACTION_REMOVE): ?>
+                                    <a data-html="true" data-placement="left" data-toggle="popover" data-content="<div class='text-left'>Deseja mesmo excluir este item? <button class='btn btn-primary' onclick='DataGrid.confirmarExclusaoCallback(this)'>Sim</button> <button data-dismiss='popover' onclick='DataGrid.cancelarExclusaoCallback(this)' class='btn btn-danger btn-cancelar-delete'>Cancelar</button></div>" class="rubix-color <?php echo $action['cssClass'] ?>" data-id="<?php echo $row->$getIdMethodName() ?>" data-href="<?php echo $this->url(null, $urlAction) ?>"><span class="glyphicon glyphicon-<?php echo $action['icon'] ?>"></span></a>
+                                <?php else: ?>
+                                    <a class="rubix-color <?php echo $action['cssClass'] ?>" href="<?php echo $this->url(null, $urlAction) ?>"><span class="glyphicon glyphicon-<?php echo $action['icon'] ?>"></span></a>
+                                <?php endif; ?>
                             <?php endforeach; ?>
                         </td>
                     <?php endif; ?>
