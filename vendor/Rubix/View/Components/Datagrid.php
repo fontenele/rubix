@@ -8,16 +8,26 @@ use Zend\Paginator\Paginator;
 use Doctrine\ORM\Tools\Pagination\Paginator as DoctrinePaginator;
 use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator as PaginatorAdapter;
 
+/**
+ * @package Rubix\View\Components
+ * @name $Datagrid
+ */
 class Datagrid {
 
     /**
-     *
+     * Debug
+     * @var boolean
+     */
+    public $debug = false;
+
+    /**
+     * View
      * @var ViewModel
      */
     public $view;
 
     /**
-     *
+     * Doctrine QueryBuilder
      * @var \Doctrine\ORM\QueryBuilder
      */
     public $queryBuilder;
@@ -29,7 +39,7 @@ class Datagrid {
     public $paginator;
 
     /**
-     *
+     * Itens per page
      * @var integer
      */
     public $itensPerPage = 10;
@@ -74,7 +84,7 @@ class Datagrid {
      *
      * @var string
      */
-    public $getIdMethodName;
+    public $getIdMethodName = 'getIntCod';
 
     /**
      *
@@ -116,6 +126,10 @@ class Datagrid {
      */
     public $sm;
 
+    /**
+     * Constructor
+     * @param \Zend\Di\ServiceLocator $sm
+     */
     public function __construct($sm = null) {
         if ($sm) {
             $this->setServiceManager($sm);
@@ -126,45 +140,73 @@ class Datagrid {
         $this->setView($view);
     }
 
+    /**
+     * Return datagrid view
+     * @return ViewModel
+     */
     public function getView() {
         return $this->view;
     }
 
+    /**
+     * Set datagrid view
+     * @param \Zend\View\Model\ViewModel $view
+     * @return \Rubix\View\Components\Datagrid
+     */
     public function setView(ViewModel $view) {
         $this->view = $view;
         return $this;
     }
 
+    /**
+     * Return Doctrine QueryBuilder
+     * @return \Doctrine\ORM\QueryBuilder
+     */
     public function getQueryBuilder() {
         return $this->queryBuilder;
     }
 
+    /**
+     * Set Doctrine QueryBuilder
+     * @param \Doctrine\ORM\QueryBuilder $queryBuilder
+     * @return \Rubix\View\Components\Datagrid
+     */
     public function setQueryBuilder(\Doctrine\ORM\QueryBuilder $queryBuilder) {
         $request = new \Zend\Http\PhpEnvironment\Request();
 
         $sortField = $request->getQuery('_sortfield');
         $sortOrder = $request->getQuery('_sortorder');
 
+        $this->debugQueryBuilder('Starting QueryBuilder', $queryBuilder);
+
         if($sortField && $this->columns[$sortField]['aliasOrderBy']) {
             $queryBuilder->orderBy($this->columns[$sortField]['aliasOrderBy'], $sortOrder == 'ASC' ? $sortOrder : 'DESC');
+            $this->debugQueryBuilder("Adding ORDERBY [{$this->columns[$sortField]['aliasOrderBy']}:" . $sortOrder == 'ASC' ? $sortOrder : 'DESC' . "]", $queryBuilder);
         }
 
-        /**
-         * @todo Testar vários wheres seguidos, pois está com problemas
-         */
         $get = $request->getQuery()->toArray();
         foreach($this->filter as $filter) {
             if($filter['type'] != 'submit' && \key_exists($filter['name'], $get) && $get[$filter['name']]) {
-                $val = htmlentities($get[$filter['name']]);
-                if(\gettype($get[$filter['name']]) == 'integer') {
-                    $queryBuilder->andWhere("{$filter['alias']} = {$val}");
-                }else{
-                    $queryBuilder->andWhere("{$filter['alias']} = '{$val}'");
+                $val = urldecode($get[$filter['name']]);
+                switch(true) {
+                    case \gettype($get[$filter['name']]) == 'integer':
+                        $queryBuilder->andWhere("{$filter['alias']} = {$val}");
+                        $this->debugQueryBuilder("Adding WHERE [{$filter['alias']} = {$val}]", $queryBuilder);
+                        break;
+                    case strtoupper($filter['condition']) == 'LIKE':
+                        $_val = strtoupper(sprintf($filter['conditionValue'], $val));
+                        $queryBuilder->andWhere("UPPER({$filter['alias']}) {$filter['condition']} {$_val}");
+                        $this->debugQueryBuilder("Adding WHERE [UPPER({$filter['alias']}) {$filter['condition']} {$_val}]", $queryBuilder);
+                        break;
+                    default:
+                        $_val = sprintf($filter['conditionValue'], $val);
+                        $queryBuilder->andWhere("{$filter['alias']} {$filter['condition']} {$_val}");
+                        $this->debugQueryBuilder("Adding WHERE [{$filter['alias']} {$filter['condition']} {$_val}]", $queryBuilder);
+                        break;
                 }
             }
         }
 
-        //xd($queryBuilder->getQuery()->getSQL());
         $doctrinePaginator = new DoctrinePaginator($queryBuilder);
         $paginatorAdapter = new PaginatorAdapter($doctrinePaginator);
 
@@ -179,55 +221,125 @@ class Datagrid {
         return $this;
     }
 
+    /**
+     * Debug querys on QueryBuilder
+     * @param string $action
+     * @param \Doctrine\ORM\QueryBuilder $qb
+     */
+    protected function debugQueryBuilder($action, $qb) {
+        if($this->debug) {
+            echo '<pre>';
+            echo "<h4>{$action}</h4>";
+            print_r($qb->getQuery()->getSQL());
+            echo '</pre>';
+        }
+    }
+
+    /**
+     * Get Paginator
+     * @return \Zend\Paginator\Paginator
+     */
     public function getPaginator() {
         return $this->paginator;
     }
 
+    /**
+     * Set Paginator
+     * @param \Zend\Paginator\Paginator $paginator
+     * @return \Rubix\View\Components\Datagrid
+     */
     public function setPaginator(Paginator $paginator) {
         $this->paginator = $paginator;
         return $this;
     }
 
+    /**
+     * Return the index name on the url to return actual page
+     * @return string
+     */
     public function getPageGetName() {
         return $this->pageGetName;
     }
 
-    public function getItensPerPage() {
-        return $this->itensPerPage;
-    }
-
-    public function setItensPerPage($itensPerPage) {
-        $this->itensPerPage = $itensPerPage;
-        return $this;
-    }
-
+    /**
+     * Set the index name on the url to return actual page
+     * @param string $pageGetName
+     * @return \Rubix\View\Components\Datagrid
+     */
     public function setPageGetName($pageGetName) {
         $this->pageGetName = $pageGetName;
         return $this;
     }
 
+    /**
+     * Return itens per page
+     * @return integer
+     */
+    public function getItensPerPage() {
+        return $this->itensPerPage;
+    }
+
+    /**
+     * Set itens per page
+     * @param integer $itensPerPage
+     * @return \Rubix\View\Components\Datagrid
+     */
+    public function setItensPerPage($itensPerPage) {
+        $this->itensPerPage = $itensPerPage;
+        return $this;
+    }
+
+
+    /**
+     * Return datagrid title
+     * @return string
+     */
     public function getTitle() {
         return $this->title;
     }
 
+    /**
+     * Set datagrid title
+     * @param string $title
+     * @return \Rubix\View\Components\Datagrid
+     */
     public function setTitle($title) {
         $this->title = $title;
         return $this;
     }
 
+    /**
+     * Return datagrid header
+     * @return array
+     */
     public function getHeader() {
         return $this->header;
     }
 
+    /**
+     * Return search form
+     * @return \Rubix\Mvc\Form
+     */
     public function getForm() {
         return $this->form;
     }
 
+    /**
+     * Set search form
+     * @param \Rubix\Mvc\Form $form
+     * @return \Rubix\View\Components\Datagrid
+     */
     public function setForm(\Rubix\Mvc\Form $form) {
         $this->form = $form;
         return $this;
     }
 
+    /**
+     * Add header link
+     * @param string $label
+     * @param string $link
+     * @return \Rubix\View\Components\Datagrid
+     */
     public function addHeaderLink($label, $link = array()) {
         $this->header[] = array(
             'type' => self::HEADER_LINK,
@@ -238,6 +350,13 @@ class Datagrid {
         return $this;
     }
 
+    /**
+     * Add header button
+     * @param string $label
+     * @param string $link
+     * @param string $icon
+     * @return \Rubix\View\Components\Datagrid
+     */
     public function addHeaderButton($label, $link = array(), $icon = null) {
         $this->header[] = array(
             'type' => self::HEADER_BUTTON,
@@ -249,26 +368,48 @@ class Datagrid {
     }
 
     /**
-     *
+     * Set ServiceLocator
      * @param \Zend\ServiceManager\ServiceManager $sm
      */
     public function setServiceManager(ServiceManager $sm) {
         $this->sm = $sm;
     }
 
+    /**
+     * Return URLs configs
+     * @return array
+     */
     public function getUrl() {
         return $this->url;
     }
 
+    /**
+     * Return the method name to return ID from Entity
+     * @return string
+     */
     public function getGetIdMethodName() {
         return $this->getIdMethodName;
     }
 
+    /**
+     * Set the method name to return ID from Entity
+     * @param string $getIdMethodName
+     * @return \Rubix\View\Components\Datagrid
+     */
     public function setGetIdMethodName($getIdMethodName) {
         $this->getIdMethodName = $getIdMethodName;
         return $this;
     }
 
+    /**
+     * Add datagrid column
+     * @param string $label
+     * @param string $entityAttr
+     * @param array $options
+     * @param string $methodGet
+     * @param string $aliasOrderBy
+     * @return \Rubix\View\Components\Datagrid
+     */
     public function addColumn($label, $entityAttr, $options = array(), $methodGet = null, $aliasOrderBy = null) {
         $this->columns[$entityAttr] = array(
             'label' => $label,
@@ -279,6 +420,12 @@ class Datagrid {
         return $this;
     }
 
+    /**
+     * Add datagrid action on column actions
+     * @param string $type
+     * @param string $icon
+     * @return \Rubix\View\Components\Datagrid
+     */
     public function addAction($type, $icon = null) {
         $this->actions[$type] = array(
             'icon' => $icon
@@ -286,7 +433,17 @@ class Datagrid {
         return $this;
     }
 
-    public function addFilterField($name, $type = 'input', $alias = null, $label = null) {
+    /**
+     * Add search field
+     * @param string $name
+     * @param string $condition
+     * @param string $conditionValue
+     * @param string $type
+     * @param string $alias
+     * @param string $label
+     * @return \Rubix\View\Components\Datagrid
+     */
+    public function addFilterField($name, $condition = '=', $conditionValue = "'%s'", $type = 'input', $alias = null, $label = null) {
         $render = '';
         $labelField = $name;
         $class = 'col-lg-6';
@@ -312,14 +469,16 @@ class Datagrid {
             'label' => $label,
             'labelField' => $labelField,
             'render' => $render,
-            'class' => $class
+            'class' => $class,
+            'condition' => $condition,
+            'conditionValue' => $conditionValue
         );
 
         return $this;
     }
 
     /**
-     *
+     * Render view
      * @return string
      */
     public function __toString() {
@@ -335,6 +494,7 @@ class Datagrid {
             $this->getView()->setVariable('header', $this->getHeader());
             $this->getView()->setVariable('form', $this->getForm());
             $this->getView()->setVariable('filter', $this->filter);
+            $this->getView()->setVariable('queryParams', $request->getQuery()->getArrayCopy());
             $this->getView()->setVariable('sortField', $request->getQuery('_sortfield'));
             $this->getView()->setVariable('sortOrder', $request->getQuery('_sortorder') == 'ASC' ? 'DESC' : 'ASC');
             $this->getView()->setVariable('actions', $this->actions);
@@ -349,7 +509,7 @@ class Datagrid {
             return $renderer->render($this->getView());
         } catch (\Exception $exception) {
             //throw $exception;
-            xd($exception->getMessage(), $exception->getCode());
+            xd($exception->getMessage(), $exception->getCode(), $exception->getFile(), $exception->getLine(), $exception->getTraceAsString());
             return '';
         }
     }
